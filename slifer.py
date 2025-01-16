@@ -1,10 +1,9 @@
 import sqlite3
 from datetime import date
 
+# right now i am not concerned about sql conjector attack but in future this will be fixed
 data_base = "slifer.db"
 
-today = date.today()
-today = today.isoformat()
 
 # by storing all the code in one sql file it is simple to manage the data base.
 # eventhough i want to have some beautiful user interface ,creating the table for subject,topic and subtopic in the start will help me identify usefull approaches
@@ -14,7 +13,7 @@ with open("create_slifer_database.sql") as f:
 
 # */ there will be 3 tables in a data base called slifer that store Greade,subject, topic and subtopic. */
 
-conn  = sqlite3.connect("slifer.db")
+conn  = sqlite3.connect(data_base)
 
 cursor = conn.cursor()
 
@@ -29,73 +28,70 @@ print("The Data base created successfully")
 class Subject:
     """The function of this class is to make adding ,
     removing,asking and editing subject simple."""
-    def __init__(self):
-        ...
+    def __init__(self, data_base: str) -> None:
+        """ the database must be intialized first because it will be used later repetidly in the class. """
+        self.data_base = data_base
+        self.connection = sqlite3.connect(data_base)
+        self.cursor = self.connection.cursor()
+        
 
     # but first adding.
-    def add_subject(self, data_base : str ,subject_name: list[str],today) -> None:
-        conn  = sqlite3.connect(data_base)
-        cursor = conn.cursor()
+    def add_subject(self,subject_name: list[str],today: str = date.today().isoformat()) -> None:
+        formated_subject_input = [
+                {"name" : subject.strip(), #remove any white space.
+                 
+                 "rating" : 3,
+                 "today" : today,
+                 } for subject in subject_name
+                ]
 
-        formated_list_input = []
-        for subject in subject_name:
-            table_row = {"name" : subject.strip(), #remove any white space.
-                         "today" : today,
-                         "rating" : 3,
-                         }
-            formated_list_input.append(table_row)
+        self.cursor.executemany("INSERT INTO subjects(name, last_seen,rating) VALUES(:name,:today,:rating)",formated_subject_input)
+        self.connection.commit()
 
-        cursor.executemany("INSERT INTO subjects(name, last_seen,rating) VALUES(:name,:today,:rating)",formated_list_input)
-        conn.commit()
+class Topic:
+    """ The topic class has the same functionality as the subject class"""
 
+    def __init__(self,data_base: str) -> None:
+        """ because topic is manuplated in a data base
+        the database must be provided"""
+        self.data_base = data_base
+        self.connection = sqlite3.connect(data_base)
+        self.cursor = self.connection.cursor()
+    # Nothing will change from subject class.
+    # but because i wanted to process subject id in the class there is additional code.
+    def add_topic(self,subject_name : str,topic_name: str,remember_me : str = date.today().isoformat(), last_seen: str = date.today().isoformat(),
+                  rating = 3):
+        extract = self.cursor.execute("SELECT subject_id FROM subjects WHERE name = (?)",subject_name)
+        result = extract.fetchone()
+        # reporting to the user that the subject is not found is better than showing the trackrace
+        if result:
+            subject_id = result[0]
+        else:
+            print(f"Subject doesn't exist")
+        formated_topic_list = [
+                {"subject_id" : subject_id,
+                 "name" : topic.strip(),
+                 "remember_me" : remember_me,
+                 "last_seen" : last_seen,
+                 "rating" : rating
+
+                 }for topic in topic_name
+                ]
+        self.cursor.executemany("""INSERT INTO topics(subject_id,name,remember_me,last_seen,rating) VALUES(:subject_id,:name,:remember_me,:last_seen,:rating)""",formated_topic_list)
+        self.connection.commit()
+
+
+# THE TEST PEOGRAM
 subject_names = input("please enter the subject\n> ").split(",")
-sub = Subject()
-sub.add_subject(data_base ,subject_names,today)
+sub = Subject(data_base)
+sub.add_subject(subject_names)
 print("subject added successfully")
 
+topic_name = input(f"add topics to {subject_names}\n> ").split(",")
+top = Topic(data_base)
+top.add_topic(subject_names,topic_name)
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-
-# input returns string ,so using string method "split" is possible.
-# this makes it effective for users to enter multiple data at once.
-subjects = input("please enter the subject\n> ").split(",")
-
-
-# when .stripe is used the input is no longer a string,
-# it will be a list in which the data base wouldn't accept and rises error
-# the for loop is used to eliminate that.
-data = []
-for subject in subjects:
-    table_row = {"name" : subject.strip(),
-                 "today" : today,
-                 "rating" : 4.6}
-    data.append(table_row)
-
-# subject_name,last_seen date and the ratings must be provided(the rating might show the diffuculty of the subject
-
-cursor.executemany("INSERT INTO subjects(name, last_seen,rating) VALUES(:name,:today,:rating)",data)
-
-conn.commit()
-print("adding subject is completed succesfully")
-"""
