@@ -1,5 +1,7 @@
 <div align="center">
+
 # Slipher – Personalized Learning tracker
+
 **before moving on:** we want to **thank you** for checking slifer repository
 
 **Slipher** is a learning tracker designed to help students(**high school**) do better in there exams.
@@ -9,7 +11,7 @@ It uses a spaced reptation technique with personalized notification system to he
 ---
 
 ## 📖 Table of Contents
-- [purpse](#-why-slipher)
+- [purpose](#-why-slipher)
 - [Code Overview](#-code-overview)
 - [Progress So Far](#-progress-so-far)
 - [Core Focus](#-core-focus)
