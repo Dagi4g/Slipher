@@ -1,0 +1,23 @@
+slifer/
+     |---App/
+         |---Frontend/
+
+             |---Assets/
+
+	         |---Images/
+		 |---Gif/
+
+	     |---Src/
+
+	         |---Components/
+		 |---Redux/
+		 |---Screens/
+		 |---Tests/
+
+	 |---Backend/
+
+	     |---Api/
+	     |---DataBase/
+
+	 |---Libs/ # this will be organized when the app is established
+	    
