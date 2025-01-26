@@ -103,3 +103,7 @@ Slipher currently focuses on **fundamental features** to ensure the app is stabl
 
 ### Tech Stack
 ![Python](https://img.shields.io/badge/Python-FFD43B?style=flat-square&logo=python&logoColor=green)
+
+## License
+
+Slifer's license: [License](./Documentation/License)
