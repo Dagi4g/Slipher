@@ -15,6 +15,8 @@
 import sqlite3
 from datetime import date
 
+from init_db_connection import InitEntity,initalize_database
+
 # Read me first dagim
 #   "I have no time to worry."
 
@@ -22,8 +24,9 @@ from datetime import date
 data_base = "/data/data/com.termux/files/home/slifer/App/Backend/DataBase/slifer.db"
 schema_file = "/data/data/com.termux/files/home/slifer/App/Backend/DataBase/schema.sql"
 
-def initalize_database(data_base: str, schema_file: str):
-    """ This method will read the schema file from database directory and executes the code. """
+
+"""def initalize_database(data_base: str, schema_file: str):
+    "" This method will read the schema file from database directory and executes the code. ""
 
     with open(schema_file) as file:
         # Storing all the code in one sql file is simple for managing the data base.
@@ -34,7 +37,7 @@ def initalize_database(data_base: str, schema_file: str):
     # */ There will be 3 tables in a data base called slifer that store,subject, topic and subtopic. */
     conn.commit()
     print("The Data base created successfully")
-
+"""
 
     
 
@@ -44,56 +47,31 @@ def initalize_database(data_base: str, schema_file: str):
 
 """ Add subject first then ask for topics and subtopics smothlly"""
 
-class Subject:
-    """ The function of this class is to make adding ,
-    removing,asking and editing subject simple."""
-    def __init__(self, data_base: str) -> None:
-        """ The database must be intialized first because it will be used later repetidly in the class. """
-        # This try statment is used to privent injection attack
-        try :
-            self.data_base = data_base
-            self.connection = sqlite3.connect(data_base)
-            self.cursor = self.connection.cursor()
-            self.cursor.execute("SELECT 1")
-
-        except sqlite3.Error as e:
-            print(f"Database Connection error:{e}")
-            self.connection = None
-
-        
-
-    # But first adding.
+class Subject(InitEntity):
+    " Subject class inherits from InitEntity class to initialize itself """
     def add_subject(self,subject_name: list[str],today: str = date.today().isoformat()) -> None:
         if not self.connection:
             print("Cannot add subject: database connection error")
             return
-        try :
-            formated_subject_input = [
+        
+        formated_subject_input = [
                 {"name" : subject.strip(), # Remove any white space.
                  
                  "rating" : 3,
                  "today" : today,
                  } for subject in subject_name
                 ]
+        try : 
             self.cursor.executemany("INSERT INTO subjects(name, last_seen,rating) VALUES(:name,:today,:rating)",formated_subject_input)
-            self.connection.commit() # Every change to the database must be comited .
             print("Subject added succesfully.")
         except sqlite3.IntegrityError:
-            print(f"\"{subject_name}\" exists in the database.")
-            self.connection.commit()# if not commited the data base will be locked for topic.
+            print(f"{subject_name} exists in the database.")
+        self.connection.commit()# because the bug only occur in execute many class every thing must be commited to privent locking the database.
 
     def close_connection(self):# In case if needed.
         self.connections().close()
 
-class Topic:
-    """ The topic class has the same functionality as the subject class"""
-
-    def __init__(self,data_base: str) -> None:
-        """ Because topic is manuplated in a data base
-        the database must be provided"""
-        self.data_base = data_base
-        self.connection = sqlite3.connect(data_base)
-        self.cursor = self.connection.cursor()
+class Topic(InitEntity):
     # Nothing will change from subject class.
     # but because i wanted to process subject id in the class there is additional code.
     def add_topic(self,subject_name : str,topic_name: str,remember_me : str = date.today().isoformat(), last_seen: str = date.today().isoformat(),
@@ -115,9 +93,12 @@ class Topic:
 
                  }for topic in topic_name
                 ]
-        self.cursor.executemany("""INSERT INTO topics(subject_id,name,remember_me,last_seen,rating) VALUES(:subject_id,:name,:remember_me,:last_seen,:rating)""",formated_topic_list)
+        try :
+            self.cursor.executemany("""INSERT INTO topics(subject_id,name,remember_me,last_seen,rating) VALUES(:subject_id,:name,:remember_me,:last_seen,:rating)""",formated_topic_list)
+            print("topic added successfully.")
+        except sqlite3.IntegrityError:
+            print(f"{topic_name} exists in the database")
         self.connection.commit()
-        print("topic added successfully.")
 
 
 # THE TEST PEOGRAM

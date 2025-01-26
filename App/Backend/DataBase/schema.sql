@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS subjects (
 CREATE TABLE IF NOT EXISTS "topics"(
 	
 	"topic_id" INTEGER,
-	"name" TEXT NOT NULL,
+	"name" TEXT NOT NULL UNIQUE,
 	"last_seen" DATE,
 	"rating" NUMERIC,
 	"remember_me" DATE,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "topics"(
 
 CREATE TABLE IF NOT EXISTS "subtopics"(
 	"subtopic_id" INTEGER,
-	"name" TEXT,
+	"name" TEXT NOT NULL,
 	"last_seen" DATE,
 	"ratings" NUMERIC,
 	"remeber_me" DATE,
