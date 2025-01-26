@@ -106,4 +106,4 @@ Slipher currently focuses on **fundamental features** to ensure the app is stabl
 
 ## License
 
-Slifer's license: [License](./Documentation/License)
+Slifer's license: [License](./Documentation/LICENSE)
