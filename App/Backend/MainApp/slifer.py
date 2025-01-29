@@ -15,7 +15,7 @@
 import sqlite3
 from datetime import date
 
-from init_db_connection import InitEntity,initalize_database
+from init_db_connection import InitEntity, DatabaseManager
 
 # Read me first dagim
 #   "I have no time to worry."
@@ -23,24 +23,6 @@ from init_db_connection import InitEntity,initalize_database
 # Right now i am not concerned about sql conjector attack but in future this will be fixed
 data_base = "/data/data/com.termux/files/home/slifer/App/Backend/DataBase/slifer.db"
 schema_file = "/data/data/com.termux/files/home/slifer/App/Backend/DataBase/schema.sql"
-
-
-"""def initalize_database(data_base: str, schema_file: str):
-    "" This method will read the schema file from database directory and executes the code. ""
-
-    with open(schema_file) as file:
-        # Storing all the code in one sql file is simple for managing the data base.
-        schema = file.read()
-    conn = sqlite3.connect(data_base)
-    cursor = conn.cursor()
-    cursor.executescript(schema)
-    # */ There will be 3 tables in a data base called slifer that store,subject, topic and subtopic. */
-    conn.commit()
-    print("The Data base created successfully")
-"""
-
-    
-
 
 # Eventhough i want to have some beautiful user interface ,creating the table for subject,topic and subtopic in the start will help me identify usefull approaches
 
@@ -66,20 +48,44 @@ class Subject(InitEntity):
             print("Subject added succesfully.")
         except sqlite3.IntegrityError:
             print(f"{subject_name} exists in the database.")
-        self.connection.commit()# because the bug only occur in execute many class every thing must be commited to privent locking the database.
+        self.connection.commit()# Because  bug will only occur in execute many class every thing must be commited to privent locking the database.
+
+    def edit_subject(self,current_subject: str,change: str):
+        if self._check_subject(current_subject):
+            self.cursor.execute("UPDATE subjects SET name = ? WHERE name = ?",(change,current_subject))
+            print(f"Subject {current_subject} sucessfully changed to {change}")
+        else:
+            print(f"'{current_subject}' subject doesn't exists.")
+        self.connection.commit()
+
+
+    def _check_subject(self,current_subject_name):
+        current_subject = (current_subject_name.strip())
+        try:
+            existing =  self.cursor.execute("SELECT subject_id FROM subjects WHERE name = ?",current_subject)
+        except sqlite3.ProgrammingError:
+            # Do nothing if the user enters white space .
+            return
+        # Trying to notify the user if subject doesn't exists.
+        
+        if existing.fetchall():  
+            return True
+        else:
+            return False
+        
 
     def close_connection(self):# In case if needed.
         self.connections().close()
 
 class Topic(InitEntity):
     # Nothing will change from subject class.
-    # but because i wanted to process subject id in the class there is additional code.
+    # But because i wanted to process subject id in the class there is additional code.
     def add_topic(self,subject_name : str,topic_name: str,remember_me : str = date.today().isoformat(), last_seen: str = date.today().isoformat(),
                   rating = 3):
-        subject = (subject_name.strip(),)
-        extract = self.cursor.execute("SELECT subject_id FROM subjects WHERE name = ?",subject) # i used brackets to put ? sign but when i tried to use add_topic the code raised "incorrect number of binding suplied error.
+        subject = (subject_name.strip(),)# Subject_name must be converted into tuple inorder to privent "incorrect number of binding suplied error" .
+        extract = self.cursor.execute("SELECT subject_id FROM subjects WHERE name = ?",subject)  
         result = extract.fetchone()
-        # reporting to the user that the subject is not found is better than showing the trackrace
+        # Reporting to the user that the subject is not found is better than showing the trackrace
         if result:
             subject_id = result[0]
         else:
@@ -103,7 +109,9 @@ class Topic(InitEntity):
 
 # THE TEST PEOGRAM
 if __name__ == "__main__":
-    initalize_database(data_base,schema_file)
+
+    db_manager = DatabaseManager(data_base)
+    db_manager.executescript(schema_file)
     subject_names = input("please enter the subject\n> ").split(",")
     sub = Subject(data_base)
     sub.add_subject(subject_names)
@@ -116,6 +124,12 @@ if __name__ == "__main__":
         top = Topic(data_base)
         print(subject)
         top.add_topic(subject,topic_name) # the subject must be a tuple in order to eliminate "sqlite3.programming error".
+
+    #simple test for editing subject .
+    edit = input("insert subject to be edited: ")
+    new = input("insert the new subject: ")
+    sub.edit_subject(edit,new)
+
 
 
 

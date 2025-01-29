@@ -29,13 +29,27 @@ class InitEntity:
             self.connection = None
     
 
-def initalize_database(data_base: str, schema_file: str):
-    """ This method will read the schema file from database directory and executes the code. """
-    with open(schema_file) as file:                 # Storing all the code in one sql file is simple for managing the data base.
-        schema = file.read()
-        conn = sqlite3.connect(data_base)
-        cursor = conn.cursor()
-        cursor.executescript(schema)
-        # */ There will be 3 tables in a data base called slifer that store,subject, topic and subtopic. */ 
-        conn.commit()
+class DatabaseManager:
+    """ This class  will read the schema file from database directory and executes the code. """
+    def __init__(self, data_path: str ):
+        self.data_path = data_path
+        self.connection = None
+
+    def connect(self) -> None:
+        if not self.connection:
+            self.connection = sqlite3.connect(self.data_path)
+        return self.connection
+    def close(self):
+        if self.connection:
+            self.connection.close()
+            self.connection = None # return it to its original value .
+
+    def executescript(self,schema_file):
+        with open(schema_file) as file:                 # Storing all the code in one sql file is simple for managing the data base.
+            schema = file.read()
+            conn = sqlite3.connect(self.data_path)
+            cursor = conn.cursor()
+            cursor.executescript(schema)
+            # */ There will be 3 tables in a data base called slifer that store,subject, topic and subtopic. */ 
+            conn.commit()
         print("The Data base created successfully")

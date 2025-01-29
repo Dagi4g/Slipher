@@ -1,0 +1,4 @@
+__llenv__/
+__pycache__/
+*.db
+*.sqlite3
