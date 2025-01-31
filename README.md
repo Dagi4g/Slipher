@@ -17,7 +17,7 @@ It uses a **spaced reptation technique**with personalized notification system to
 - [Core Focus](#-core-focus)
 - [How to Install](#-how-to-install)
 - [How You Can Contribute](#-how-you-can-contribute)
-- [License](# license)
+- [License](#license)
 - [Thank You](#-thank-you)
 
 ---
