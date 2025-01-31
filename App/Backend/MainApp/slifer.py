@@ -24,24 +24,6 @@ from init_db_connection import InitEntity,initalize_database
 data_base = "/data/data/com.termux/files/home/slifer/App/Backend/DataBase/slifer.db"
 schema_file = "/data/data/com.termux/files/home/slifer/App/Backend/DataBase/schema.sql"
 
-
-"""def initalize_database(data_base: str, schema_file: str):
-    "" This method will read the schema file from database directory and executes the code. ""
-
-    with open(schema_file) as file:
-        # Storing all the code in one sql file is simple for managing the data base.
-        schema = file.read()
-    conn = sqlite3.connect(data_base)
-    cursor = conn.cursor()
-    cursor.executescript(schema)
-    # */ There will be 3 tables in a data base called slifer that store,subject, topic and subtopic. */
-    conn.commit()
-    print("The Data base created successfully")
-"""
-
-    
-
-
 # Eventhough i want to have some beautiful user interface ,creating the table for subject,topic and subtopic in the start will help me identify usefull approaches
 
 
@@ -67,6 +49,29 @@ class Subject(InitEntity):
         except sqlite3.IntegrityError:
             print(f"{subject_name} exists in the database.")
         self.connection.commit()# because the bug only occur in execute many class every thing must be commited to privent locking the database.
+
+    def edit_subject(self,existing_subject,edited):
+        if self._check_subject(existing_subject):
+            if not self._check_subject(edited):# Check if the new subject exists .
+                self.cursor.execute("UPDATE subjects SET name = ? WHERE name = ?",(edited,existing_subject))
+                print(f"{existing_subject} is sucessfully coverted to {edited}")
+            else: # the new subject exists .
+                print(f"{edited} already exists.")
+        else:
+            print(f"{existing_subject} doesn't exist") # This way the user wouldn't get error messages .
+
+        self.connection.commit()
+
+
+    def _check_subject(self,existing_subject):
+        check = self.cursor.execute("SELECT 1 FROM subjects WHERE name = ?",(existing_subject,)).fetchall() # Selecting one is enough for checking if it exists .
+        # If the execute command wasn't fetched check will store empty list. 
+
+        if check :# Exists.
+            return True
+        else :# Doesn't exist .
+            return False
+
 
     def close_connection(self):# In case if needed.
         self.connections().close()
@@ -116,6 +121,11 @@ if __name__ == "__main__":
         top = Topic(data_base)
         print(subject)
         top.add_topic(subject,topic_name) # the subject must be a tuple in order to eliminate "sqlite3.programming error".
+
+    # Test programm for edit class .
+    existing = input("Enter the subject to be edited: ")
+    new = input("Enter the new subject: ")
+    sub.edit_subject(existing,new)
 
 
 
