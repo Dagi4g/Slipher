@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS subjects (
 	"subject_id" INTEGER,
 	"name" TEXT NOT NULL UNIQUE,
-	"last_seen" DATE,
 	"rating" NUMERIC,
 	PRIMARY KEY("subject_id")
 );
