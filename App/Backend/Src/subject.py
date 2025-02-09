@@ -6,7 +6,7 @@
 import sqlite3
 from datetime import date
 
-from init_db_connection import InitEntity,initalize_database
+from initentity import InitEntity
 
 # Right now i am not concerned about sql conjector attack but in future this will be fixed
 
@@ -15,25 +15,18 @@ from init_db_connection import InitEntity,initalize_database
 
 
 class Subject(InitEntity):
-    " Subject class inherits from InitEntity class to initialize itself """
+    """ Handles  Subject related database opperations. """
 
     def add_subject(self,subject_name: list[str],today: str = date.today().isoformat()) -> None:
         if not self.connection:
             print("Cannot add subject: database connection error")
             return
-        
-        formated_subject_input = [
-                {"name" : subject.strip(), # Remove any white space.
-                 
-                 "rating" : 3,
-                 } for subject in subject_name
-                ]
-        try : 
-            self.cursor.executemany("INSERT INTO subjects(name,rating) VALUES(:name,:rating)",formated_subject_input)
-            print("Subject added succesfully.")
-        except sqlite3.IntegrityError:
-            print(f"subject: {subject_name} exists.")
-        self.connection.commit()# because the bug only occur in execute many class every thing must be commited to privent loocking the database.
+        for subject in map(str.strip,subject_name):
+            if not self._check_subject(subject):
+                self._execute("INSERT INTO subjects(name,rating) VALUES (?,?)",(subject,3))
+                print(f"subejct: '{subject}' added succesfully")
+            else:
+                print(f"'{subject}' already exists")
 
 
     def edit_subject(self,existing_subject,edited):

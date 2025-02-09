@@ -5,8 +5,7 @@
 import sqlite3
 from datetime import date
 
-from init_db_connection import InitEntity,initalize_database
-
+from initentity import InitEntity
 
 class Topic(InitEntity):
     """ A class for managing topic """
