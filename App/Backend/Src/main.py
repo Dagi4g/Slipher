@@ -20,6 +20,19 @@ def add_subjects(subject_handler):
     if subject_names:
         subject_handler.add_subject(subject_names)
 
+def edit_subject(subject_handler):
+    existing_subject = input("Enter subject to rename:\n> ")
+    if subject_handler._get_subject_id(existing_subject):
+        new_subject = input("Enter the new name for the subject:\n>")
+        if not subject_handler._check_subject(new_subject):
+            subject_handler.edit_subject(existing_subject,new_subject)
+        else:
+            print(f"subject: '{new_subject}' already exists")
+    else:
+        print(f"subject: {existing_subject} doesn't exists")
+
+
+
 def add_topics(topic_handler):
     """ Handles user input for adding topics to subjects."""
     while True:
@@ -45,7 +58,7 @@ def add_topics(topic_handler):
 
 def edit_topic(topic_handler):
     """ Handles user input for editing a topic."""
-    subject = input("Enter subject of the topic to edit:\n> ").strip()
+    subject = input("Enter subject to rename its topic:\n> ").strip()
     if topic_handler._get_subject_id(subject): # To make things dynamic and notify the user instantly.
 
         old_topic = input("Enter the current topic name:\n> ").strip()
@@ -85,10 +98,11 @@ def main():
         print("\nOptions:")
         print("1. Add Subjects")
         print("2. Add Topics")
-        print("3. Edit Topic")
-        print("4. Delete Subject")
-        print("5. Delete Topic")
-        print("6. Exit")
+        print("3. Edit Subject")
+        print("4. Edit Topic")
+        print("5. Delete Subject")
+        print("6. Delete Topic")
+        print("7. Exit")
 
         choice = input("Choose an option:\n> ").strip()
 
@@ -97,12 +111,14 @@ def main():
         elif choice == "2":
             add_topics(topic_handler)
         elif choice == "3":
-            edit_topic(topic_handler)
+            edit_subject(topic_handler)
         elif choice == "4":
-            delete_subject(subject_handler)
+            edit_topic(topic_handler)
         elif choice == "5":
-            delete_topic(topic_handler)
+            delete_subject(subject_handler)
         elif choice == "6":
+            delete_topic(topic_handler)
+        elif choice == "7":
             print("Exiting program.")
             break
         else:

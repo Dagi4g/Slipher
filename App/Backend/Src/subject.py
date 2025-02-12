@@ -32,7 +32,7 @@ class Subject(InitEntity):
     def edit_subject(self,existing_subject,edited):
         if self._check_subject(existing_subject):
             if not self._check_subject(edited):# Edit if the new subject doesn't exists .
-                self.cursor.execute("UPDATE subjects SET name = ? WHERE name = ?",(edited,existing_subject))
+                self._execute("UPDATE subjects SET name = ? WHERE name = ?",(edited,existing_subject))
                 print(f"{existing_subject} is sucessfully coverted to {edited}")
             else: # the new subject exists .
                 print(f"{edited} already exists.")
