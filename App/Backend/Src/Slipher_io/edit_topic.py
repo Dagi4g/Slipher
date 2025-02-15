@@ -1,3 +1,6 @@
+# Copyright 2025 Dagim
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
 
 def edit_topic(topic_handler):
     """ Handles user input for editing a topic."""

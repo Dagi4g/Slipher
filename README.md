@@ -6,7 +6,7 @@
 
 **Slipher** is an innovative app designed to help **high school students** improve their learning experience and there exam score.
 
-It uses a **spaced reptation technique**with personalized notification system to help students retain information better and stay engaged with their studies.
+It uses a **spaced reptation technique** with personalized notification system to help students retain information better and stay engaged with their studies.
 
 ---
 

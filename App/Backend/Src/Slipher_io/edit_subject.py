@@ -1,14 +1,20 @@
+# Copyright 2025 Dagim
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+
+from .add_subjects import add_subjects
+
 def edit_subject(subject_handler):
     """ Handles user input for editing subject."""
-    prompt = "Enter subject to rename:(\"q\" to quit)\n> "
-    while True:
-        existing_subject = input(prompt)
+    while True: # Keep asking until the user inputs a valide subject(existing) or cancels.
+        existing_subject = input("Enter subject to rename:(\"q\" to quit)\n> ")
+        s
         if existing_subject.lower() == "q":
             break
 
         if subject_handler._check_subject(existing_subject):
-            prompt = f"Enter the new name for\"{existing_subject}\":\n>"
-            new_subject = input(prompt)
+            while True:
+                new_subject = input(f"Enter the new name for\"{existing_subject}\":\n>")
             if not subject_handler._check_subject(new_subject):
                 subject_handler.edit_subject(existing_subject,new_subject)
                 choice = input("Do you want to edit another subject(press enter) or quit(q): ")

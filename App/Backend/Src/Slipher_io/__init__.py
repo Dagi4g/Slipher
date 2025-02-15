@@ -1,3 +1,7 @@
+# Copyright 2025 Dagim
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+
 from .add_subjects import add_subjects
 from .add_topics import add_topics
 from .edit_topic import edit_topic
