@@ -6,6 +6,6 @@ def add_subjects(subject_handler):
     """ Handles user input for adding subjects."""
     subject_names = input("Enter subjects (comma-separated):\n> ").split(",")
     subject_names = [s.strip() for s in subject_names if s.strip()]
-    if subject_names:
+    if not subject_handler._check_subject(subject_name) :
         subject_handler.add_subject(subject_names)
-        # There is no need for printing subject is added because the subject_handler have to care about that.
+if not self._check_subject(subject):                                                  self._execute("INSERT INTO subjects(name,rating) VALUES (?,?)",(subject,3))                                                print(f"subejct: '{subject}' added succesfully")                              else:                                        print(f"'{subject}' already exists")

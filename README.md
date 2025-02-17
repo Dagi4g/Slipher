@@ -69,12 +69,13 @@ Slipher currently focuses on **fundamental features** to ensure the app is stabl
 1. **Clone the Repository:**
    ```bash
    git clone <https://github.com/Dagi4g/Slifer-.git>
-   cd slipher/App/Backend/Src
+   
    ```
 
 
 2. **Run the app:**
     ```bash
+    cd slipher/App/Backend/Src
     python run.py
     ```
 
