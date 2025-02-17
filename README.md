@@ -1,12 +1,12 @@
 <div align="center">
 
-# Slipher – Personalized Learning tracker
+# Slipher Personalized Learning tracker
 
-**before moving on:** we want to **thank you** for paying a vist to **slifer** repository
+**before moving on:** we want to **thank you** for paying a vist to **slipher** repository
 
 **Slipher** is an innovative app designed to help **high school students** improve their learning experience and there exam score.
 
-It uses a **spaced reptation technique** with personalized notification system to help students retain information better and stay engaged with their studies.
+It uses a **spaced reptation algorithm** with personalized notification system to help students retain information better and stay engaged with their studies.
 
 ---
 
@@ -23,9 +23,9 @@ It uses a **spaced reptation technique** with personalized notification system t
 ---
 
 ## 🚀 Why Slipher?
-The goal of Slipher is to empower students to **learn and remember better** by:
+The goal of Slipher is to empower students to **remember better and study less** by:
 - Sending **personalized notifications** for review.
-- reducing time spent on studying with**spaced repetition** for better retention.
+- reducing time spent on studying with **spaced repetition** for better retention.
 - Helping students stay **actively engaged** with their learning material.
 
 ---
@@ -33,7 +33,7 @@ The goal of Slipher is to empower students to **learn and remember better** by:
 
 ## 📦 Code Overview
 Slipher uses **Python** and **SQLite** for managing study data.
-- **Database:** A SQLite database (`slifer.db`) is initialized using an external SQL file.
+- **Database:** A SQLite database (`slifer.db`) is initialized using an external SQL file(`schema.sql`) in `App/Backend/Database` folder.
 - **Subject Management:** The `Subject` class allows users to add subjects to the database via terminal input.
 - **Topic Management:** The `Topic` class links topics to existing subjects using subject IDs.
 - **User Interaction:** The terminal prompts users to enter subjects and topics, storing them in the database.
@@ -44,6 +44,7 @@ Slipher uses **Python** and **SQLite** for managing study data.
 ### ✅ Completed:
 - **Database Creation:** A structured database to store subjects and topics.
 - **Adding Subjects:** Users can add subjects directly from the terminal.
+- **Input processing** Slipher uses `Slipher_io` package to manage input output.
 
 ### 🔜 Next Steps:
 - **Simplify Adding Topics & Subtopics:** Improving how topics and subtopics are added from the terminal.
