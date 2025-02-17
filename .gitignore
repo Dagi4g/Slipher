@@ -3,4 +3,4 @@ venv/
 *.db
 *.sqlite3
 *.swp
-docs.github.com
+docs.github.com/
