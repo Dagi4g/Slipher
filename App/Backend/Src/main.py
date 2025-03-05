@@ -29,14 +29,15 @@ def main():
         print("4. Edit Topic")
         print("5. Delete Subject")
         print("6. Delete Topic")
-        print("7. Exit")
+        print("7. show subject")
+        print("'q' to Exit")
 
         choice = input("Choose an option:\n> ").strip()
 
         if choice == "1":
-            add_subjects(subject_handler)
+            add_subjects(subject_handler,topic_handler)
         elif choice == "2":
-            add_topics(topic_handler)
+            add_topics_to_subject(topic_handler)
         elif choice == "3":
             edit_subject(subject_handler)
         elif choice == "4":
@@ -46,6 +47,8 @@ def main():
         elif choice == "6":
             delete_topic(topic_handler)
         elif choice == "7":
+            show_subject(subject_handler)
+        elif choice.lower() == "q":
             print("Exiting program.")
             break
         else:

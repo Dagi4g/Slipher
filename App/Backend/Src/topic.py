@@ -2,6 +2,9 @@
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 
+
+# every method of this class can be used anywhere once it is initalized to a database.
+
 import sqlite3
 from datetime import date
 
@@ -9,13 +12,15 @@ from initentity import InitEntity
 
 class Topic(InitEntity):
     """ A class for managing topic """
-    def add_topic(self,subject_name : str,topic_name: str,remember_me : str = date.today().isoformat(), last_seen: str = date.today().isoformat(),
+    def add_topic(
+            self,subject_name : list[str],
+            topic_name: str,
+            last_seen: str = date.today().isoformat(),
                   rating = 3):
         self._get_subject_id(subject_name)
         formated_topic_list = [
                 {"subject_id" : self.subject_id,
-                 "name" : topic.strip(),
-                 "remember_me" : remember_me,
+                 "topic_name" : topic.strip(),
                  "last_seen" : last_seen,
                  "rating" : rating
 
@@ -24,8 +29,8 @@ class Topic(InitEntity):
         try :
             self.cursor.executemany(
     """
-    INSERT INTO topics(subject_id,name,remember_me,last_seen,rating) 
-    VALUES(:subject_id,:name,:remember_me,:last_seen,:rating)""",formated_topic_list)
+    INSERT INTO topics(subject_id,name,last_seen,rating) 
+    VALUES(:subject_id,:topic_name,:last_seen,:rating)""",formated_topic_list)
             print("topic added successfully.")
         except sqlite3.IntegrityError:
             print(f"topic: {topic_name} exists.")
@@ -55,16 +60,6 @@ class Topic(InitEntity):
 
 
 
-        """check_topic = self._check_topic(previous_topic,self.subject_id)
-        
-        if check_topic:
-            self.cursor.execute("UPDATE topics SET name = ? WHERE name = ? AND subject_id = ?",(new_topic,previous_topic,self.subject_id))
-            self.connection.commit()
-            print(f"{previous_topic} succesfully changed to {new_topic}")
-        else:
-            print(f"{subject_name} doesn't have {previous_topic} topic")"""
-
-
     def _check_topic(self,topic_name: str)-> bool:
 
         check = self.connection.execute("SELECT 1 FROM topics WHERE name = ? AND subject_id = ?",(topic_name,self.subject_id)).fetchall()
@@ -75,7 +70,7 @@ class Topic(InitEntity):
 
     def delete_topic(self,subject_name: str,topic_name: str) -> None:
         if self._get_subject_id(subject_name):
-            if self._check_topic(topic_name,self.subject_id):
+            if self._check_topic(topic_name):
                 self.cursor.execute("DELETE FROM topics WHERE name = ?",(topic_name,))
                 print(f"'{topic_name}' succesfully deleted")
                 self.connection.commit()

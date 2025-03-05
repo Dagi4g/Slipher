@@ -1,6 +1,18 @@
 # Copyright 2025 Dagim                  
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
+"""Initalize database connection for other classes.
+
+This class is meant to be inhereted buy other classes.
+
+Usage :
+    from initentity import InitEntity
+
+    class ClassName(InitEntity):
+        ...
+
+"""
+
 import os
 import sys
 import sqlite3
@@ -31,10 +43,10 @@ class InitEntity:
             self.connection = None
         
     def _execute(self,script: str,value: str) -> None:
+        """ Just for simple data insertion and deletion operations,
+        this method cannot work for fetching data because it returns None type."""
         self.cursor.execute(script,value)
         self.connection.commit()
 
-
-    
-
-
+    def close(self)-> None:
+        self.connection.close()
