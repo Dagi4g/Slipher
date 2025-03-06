@@ -16,8 +16,18 @@ slifer/
 
 	 |---Backend/
 
-	     |---Api/
+	     |---Src/
+	     	 |---Slipher_io
+		 |---main.py
+		 |---run.py
+		 |---config.py
+		 |---subject.py
+		 |---db_connection.py
+		 |---subject0.py
+		 |---initentity.py
+		 |---topic.py
 	     |---DataBase/
+	     |---Test/
 
 	 |---Libs/ # this will be organized when the app is established
 	    

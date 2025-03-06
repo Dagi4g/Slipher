@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS "topics"(
 	"name" TEXT NOT NULL,
 	"last_seen" DATE,
 	"rating" NUMERIC,
-	"remember_me" DATE,
 	"subject_id" INTEGER,
 	PRIMARY KEY ("topic_id"),
 	FOREIGN KEY("subject_id") REFERENCES "subject"("subject_id")
@@ -23,8 +22,17 @@ CREATE TABLE IF NOT EXISTS "subtopics"(
 	"name" TEXT NOT NULL,
 	"last_seen" DATE,
 	"ratings" NUMERIC,
-	"remeber_me" DATE,
 	"topic_id" INTEGER,
 	PRIMARY KEY("subtopic_id"),
 	FOREIGN KEY("topic_id") REFERENCES "topics"("topic_id")
 );
+
+CREATE TABLE IF NOT EXISTS "reviews_box"(
+	"id" INTEGER ,
+	"topic_id" INTEGER ,
+	"box_level" INTEGER,
+	"next_rievew" DATE,
+	PRIMARY KEY("id")
+	FOREIGN KEY("topic_id") REFERENCES "topics"("topic_id")
+);
+
