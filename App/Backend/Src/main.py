@@ -12,6 +12,7 @@ from Slipher_io import * # Because Slipher_io is used to process user input ther
 from subject import Subject
 from topic import Topic
 from config import db_path, schema_file
+from scheduler import run_schedule
 
 
 def main():
@@ -22,6 +23,9 @@ def main():
     topic_handler = Topic(db_path)
 
     while True:
+        run_schedule()
+        #this is good start and know i have the basic foundation the only thing left is using.
+
         print("\nOptions:")
         print("1. Add Subjects")
         print("2. Add Topics")
