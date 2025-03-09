@@ -9,6 +9,7 @@ from .edit_subject import edit_subject
 from .delete_subject import delete_subject
 from .delete_topic import delete_topic
 from .show_subject import show_subject
+from .show_topics import show_topics
 
 __all__ = ["add_subjects",
            "add_topics",
@@ -18,4 +19,5 @@ __all__ = ["add_subjects",
            "delete_topic",
            "show_subject",
            "add_topics_to_subject",
+           "show_topics"
            ]

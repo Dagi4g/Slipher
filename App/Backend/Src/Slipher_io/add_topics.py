@@ -17,7 +17,9 @@ def add_topic(topic_handler,subject):
         topic_names = input(f"Enter topics for '{subject}' (comma-separated):\n> ").split(",")
         for topic in map(str.strip,topic_names):
             if not topic_handler._check_topic(topic):
-                topic_handler.add_topic(subject, topic_names)
+                rating = input(f"add rating for '{topic}' 1 being hardest and 5 being simple:\n>")
+
+                topic_handler.add_topic(subject,[topic],rating = rating)
             else:
                 print(f"topic: '{topic}' already exists")
     else:

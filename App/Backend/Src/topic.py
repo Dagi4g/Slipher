@@ -16,7 +16,7 @@ class Topic(InitEntity):
             self,subject_name : list[str],
             topic_name: str,
             last_seen: str = date.today().isoformat(),
-                  rating = 3):
+            rating : int = 3):
         self._get_subject_id(subject_name)
         formated_topic_list = [
                 {"subject_id" : self.subject_id,
@@ -80,8 +80,22 @@ class Topic(InitEntity):
             print(f"subject: '{subject_name}' doesn't exist")
 
 
+    def show_topics(self) -> None:
+        """Ask the user to chose subject from database by showing them all subjects with respect to there id.
 
+        Then take the id of the subject and show all the topics in alphabetical order"""
+        subjects = self.connection.execute("SELECT subject_id ,name FROM subjects ORDER BY subject_id").fetchall() # instead of showing all the topics ,just show topics from which the user chose the subject.
+        for subject_id , name in subjects:
+            print(f"{subject_id}, {name}") # just show all the topics at once.
+        chose_id = input("enter the id of the subject to see its topics:\n> ")
+        if chose_id:
+            # The user chosen an id.
+            topics = self.connection.execute("SELECT name FROM topics WHERE subject_id = ?",(chose_id,)).fetchall()
+            if len(topics) > 0:
+                for i,topic_name in enumerate(topics,start=1):
+                    print(f"{i}, {topic_name[0]}")
+            else:
+                subject_name = self.connection.execute("SELECT name FROM subjects WHERE subject_id = ?",(chose_id,)).fetchone()
+                print(f"subject: '{subject_name[0]}' doesn't have topics.")
 
-
-
-
+        ...

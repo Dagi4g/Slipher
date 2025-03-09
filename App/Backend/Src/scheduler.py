@@ -1,5 +1,7 @@
 # Copyright 2025 Dagim                            #                                                 # Licensed under the Apache License, Version 2.0 (the "License");
 
+# Tomorrow i will create a treager that delets topics from reviews box table to automaticall delete that topic.
+
 """Schedules the next day to review a topic."""
 import math
 import sqlite3
@@ -32,7 +34,7 @@ class Scheduler(InitEntity):
 
     def save_in_review_table(self) -> None:
         """Save the calculated value from _get_review_day to the database."""
-        query = "INSERT INTO reviews_box(topic_id,box_level,next_rievew) VALUES(?,?,?)"
+        query = "INSERT INTO reviews_box(topic_id,box_level,next_review) VALUES(?,?,?)"
 
         topics = self._get_review_day()
         for topic_id,box_level,next_rievew in topics:
@@ -53,7 +55,6 @@ class Scheduler(InitEntity):
         """Check if the review day is today and return those list of topics that a will be reviewed today.""" 
         n = (self._check_box(),)
         review_date = self.connection.execute("SELECT reviews_box.topic_id, reviews_box.next_review FROM reviews_box WHERE box_level = ?",n).fetchall()
-        print(review_date)
         topic_ids = []
 
         for topic_id,review_date in review_date:
@@ -80,7 +81,8 @@ class Scheduler(InitEntity):
 
 
 def run_schedule():
-    """Runs the schedule class."
+    """Runs the schedule class."""
     s = Scheduler(config.db_path)
+    s.save_in_review_table()
     s.show_review()
 

@@ -34,6 +34,7 @@ def main():
         print("5. Delete Subject")
         print("6. Delete Topic")
         print("7. show subject")
+        print("8. show topics")
         print("'q' to Exit")
 
         choice = input("Choose an option:\n> ").strip()
@@ -52,6 +53,8 @@ def main():
             delete_topic(topic_handler)
         elif choice == "7":
             show_subject(subject_handler)
+        elif choice == "8":
+            show_topics(topic_handler)
         elif choice.lower() == "q":
             print("Exiting program.")
             break
