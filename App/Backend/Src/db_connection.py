@@ -8,7 +8,7 @@ import sqlite3
 def initalize_database(data_base: str, schema_file: str):
     """ This method will read the schema file from database directory and executes the code. """
     if not os.path.exists(data_base):
-        print(f"database {data_base} not found.\nThis error occurs when the config.py has wrong path to the database.")
+        print(f"database {data_base} not found.\nThis error occurs when the config.py has wrong path to the database, or the database file doesn't exist.")
         sys.exit()
         
 
@@ -20,7 +20,6 @@ def initalize_database(data_base: str, schema_file: str):
             cursor.executescript(schema)
             # */ There will be 3 tables in a data base called slifer that store,subject, topic and subtopic. */ 
             conn.commit()
-            print("The Data base created successfully")
     except FileNotFoundError:
         print("Error: schema file not found.\nThis error occurs when the config.py has wrong path to the schema.sql.")
         sys.exit()

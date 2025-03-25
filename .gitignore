@@ -4,3 +4,6 @@ venv/
 *.sqlite3
 *.swp
 docs.github.com/
+*.csv
+*.zip
+arrow.readthedocs.io/

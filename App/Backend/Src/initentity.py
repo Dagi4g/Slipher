@@ -48,5 +48,9 @@ class InitEntity:
         self.cursor.execute(script,value)
         self.connection.commit()
 
+    def _executemany(self,script: str,values:tuple[str,str,str]):
+        self.connection.executemany(script,values)
+        self.connection.commit()# for adding a lotof values.
+
     def close(self)-> None:
         self.connection.close()
