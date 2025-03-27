@@ -48,11 +48,13 @@ class Topic(InitEntity):
             return False
  
 
-    def edit_topic(self,subject_name: str,previous_topic: str, new_topic: str ) -> None:
+    def edit_topic(self,
+                   subject_name: str,
+                   previous_topic: str, 
+                   new_topic: str ) -> None:
         if self._get_subject_id(subject_name): # Verify the existence of subject before editing topic .
             if self._check_topic(previous_topic): # Varify the existance of topic.
-                self.cursor.execute("UPDATE topics SET name = ? WHERE name = ? AND subject_id = ?",(new_topic,previous_topic,self.subject_id))
-                self.connection.commit()
+                self._execute("UPDATE topics SET name = ? WHERE name = ? AND subject_id = ?",(new_topic,previous_topic,self.subject_id))
                 print(f"{previous_topic} succesfully changed to {new_topic}")
             else:
                 print(f"{subject_name} doesn't have {previous_topic} topic")
