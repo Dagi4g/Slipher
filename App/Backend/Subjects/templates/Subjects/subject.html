@@ -1,0 +1,17 @@
+{% extends "Subjects/base.html" %}
+
+{% block content %}
+
+{% if subjects_list %}
+	<ol>
+		{% for subject in subjects_list %}
+		<li><a href="{% url "topic" subject.id %}">{{ subject }}</a></li>
+		{% endfor %}
+	</ol>
+
+{% else %}
+	<p> there is no subject </p>
+{% endif %}
+{% endblock content %}
+
+

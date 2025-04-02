@@ -1,0 +1,21 @@
+{% extends "Subjects/base.html" %}
+
+{% block content %}
+<p>Topic: {{ topic }}</p>
+
+{% if subtopic_list %}
+<p>Subtopics: </p>
+<ol>
+
+	{% for subtopic in subtopic_list%}
+	<li>{{ subtopic }}</li>
+	{% endfor %}
+
+
+</ol>
+{% else %}
+<p>{{ topic }} doesn't have subtopics</p>
+{% endif %}
+
+{% endblock content %}
+
