@@ -1,9 +1,9 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from django.template import loader # for loding an html file and displaying it in the browserāo
 
 
 from .models import Subjects,Topics,Subtopics
-
+from .forms import SubjectForm
 
 def subject(requests):
     """Show the names of the subjects in the database."""
@@ -37,6 +37,48 @@ def subtopics(requests,topic_id):
     context = {
             "subtopic_list":subtopic_list,"topic":topic
             }
+    return HttpResponse(template.render(context,requests))
+
+
+def new_subject(requests):
+    """add new subject to the database"""
+    if requests.method != "POST":
+        #the user didn't add any data,so create a blank form.
+        form = SubjectForm()
+    else:
+        form = SubjectForm(requests.POST)
+        if form.is_valid():
+            form.save()
+            #the form is valid and saved so redirect the user to the home page.
+            return redirect("Subjects:subject")
+    template = loader.get_template("Subjects/new_subject.html")
+    context = {"form" : form}
+    return HttpResponse(template.render(context,requests))# just show the form.
+
+
+def edit_subject(request, subject_id): 
+    subject = get_object_or_404(Subjects, id=subject_id)
+    if request.method == "POST":
+        form = SubjectForm(request.POST, instance=subject)
+        if form.is_valid():
+            form.instance.subject_name = subject.subject_name  # Ensure subject name remains the same
+            form.save()
+            return redirect("Subjects:subject")
+    else:
+        form = SubjectForm(instance=subject)
+    template = loader.get_template("Subjects/edit_subject.html")
+    context =  {"form": form, "subject": subject}
+
+    return HttpResponse(template.render(context,request))
+
+
+def delete_subject(requests,subject_id):
+    subject = get_object_or_404(Subjects,id=subject_id)
+    if requests.method == "POST":
+        subject.delete()
+        return redirect("Subjects:subject")
+    template = loader.get_template("Subjects/delete_subject.html")
+    context = {"subject" : subject}
     return HttpResponse(template.render(context,requests))
 
 

@@ -1,0 +1,12 @@
+{% extends "Subjects/base.html" %}
+{% block content %}
+
+  <div class="container">
+    <h2>Add Subject</h2>
+    <form method="POST" action="{% url 'Subjects:new_subject' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+{% endblock %}
