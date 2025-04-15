@@ -12,7 +12,7 @@ class Subjects(models.Model):
         return self.subject_name
 
 class Topics(models.Model):
-    subject = models.ForeignKey(Subjects,on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subjects,on_delete=models.CASCADE,related_name="topic")
     topic_name = models.CharField(max_length=500)
 
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
@@ -21,7 +21,7 @@ class Topics(models.Model):
         return self.topic_name
 
 class Subtopics(models.Model):
-    topic = models.ForeignKey(Topics,on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topics,on_delete=models.CASCADE,related_name="subtopic")
     subtopic_name = models.CharField(max_length=500)
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 

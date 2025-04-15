@@ -3,14 +3,14 @@
 {% block content %}
 
 {% if subjects_list %}
-<p> <a href="{% url "Subjects:new_subject" %}">add subject</a></p>
+<p> <a href="{% url "Subjects:new_subject" %}"><h1>+</h1></a></p>
 	<ol>
 		{% for subject in subjects_list %}
-		<li><a href="{% url "Subjects:topic" subject.id %}">{{ subject }}</a>
+		<li><a href="{% url 'Subjects:topic' subject.id %}">{{ subject }}</a>
 			&nbsp;
-			<a href="{% url 'Subjects:edit_subject' subject.id%}">  edit</a>
+			<a href="{% url 'Subjects:edit_subject' subject.id%}">🖋️</a>
 			&nbsp;
-			<a href="{% url 'Subjects:delete_subject' subject.id %}">delete</a>
+			<a href="{% url 'Subjects:delete_subject' subject.id %}">🗑️</a>
 
 		</li>
 

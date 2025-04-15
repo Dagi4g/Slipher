@@ -1,0 +1,26 @@
+{% extends "Subjects/base.html" %}
+
+{% block content %}
+<p> Subject : {{ subject }} </p>
+<p> <a href="{% url 'Subjects:new_topic' subject.id %}">+</a><p>
+{% if topic_list %}
+<p>topics: </p>
+<ul>
+
+	{% for topic in topic_list %}
+	<li>
+	    <a href="{% url 'Subjects:subtopic' topic_id=topic.id subject_id=subject.id %}"> {{ topic }} </a>
+	    &nbsp;
+	    <a href="{% url 'Subjects:edit_topic' topic_id=topic.id subject_id=subject.id %}">🖋️</a>
+	    &nbsp;
+	    <a href="{% url 'Subjects:delete_topic' subject_id=subject.id topic_id=topic.id %}">🗑️</a>
+
+	</li>
+	{% endfor %}
+</ul>
+{% else %}
+<p> {{ subject }} has no topic </p>
+{% endif %}
+
+
+{% endblock content %}

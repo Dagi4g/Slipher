@@ -1,0 +1,13 @@
+{% extends "Subjects/base.html" %}
+
+{% block content %}
+   <div>
+	   <h2>are you sure you want to delete '{{topic.topic_name}}'?</h2>
+	   <form method="POST">
+		{% csrf_token %}
+		<!---i want to know how csrf_token works--->
+		<button action="submit">delete</button>
+	   </form>
+	   <a href="{% url 'Subjects:topic' subject_id=subject.id %}">cancel</a> 
+
+{% endblock content %}
