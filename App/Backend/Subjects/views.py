@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404,get_list_or_404
 from django.template import loader # for loding an html file and displaying it in the browserāo
+from datetime import date
 
 
 from .models import Subjects,Topics,Subtopics
@@ -84,7 +85,7 @@ def new_topic(request,subject_id):
             return redirect('Subjects:topic',subject_id=subject_id)
     else:
         form = TopicForm()
-    template = loader.get_template("Sdjango.urls.exceptions.NoReverseMatch: Reverse for 'new_subtopic' not found. 'new_subtopic' is not a valid view function or pattern name.ubjects/topic/new_topic.html")
+    template = loader.get_template("Subjects/topic/new_topic.html")
     context = {"form":form,'subject':subject}
     return HttpResponse(template.render(context,request))
 
@@ -137,15 +138,17 @@ def subtopics(requests,subject_id,topic_id):
 def new_subtopic(request,subject_id,topic_id):
     subject = Subjects.objects.get(id=subject_id)
     topic = subject.topic.get(id=topic_id)
+    last_seen = date.today().isoformat()
+    initial_data = { 'last_seen':last_seen}
     if request.method == 'POST':
-        form = SubtopicForm(request.POST)
+        form = SubtopicForm(request.POST,initial=initial_data)
         if form.is_valid():
             subtopic = form.save(commit=False)
             subtopic.topic = topic
             subtopic.save()
             return redirect("Subjects:subtopic",subject_id=subject_id,topic_id=topic_id )
     else:
-        form = SubtopicForm()
+        form = SubtopicForm(initial=initial_data)
     template = loader.get_template('Subjects/subtopic/new_subtopic.html')
     context = {'form':form,'subject':subject,'topic':topic,}
     return HttpResponse(template.render(context,request))
