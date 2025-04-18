@@ -9,7 +9,14 @@
 <ol>
 
 	{% for subtopic in subtopic_list%}
-	<li>{{ subtopic }}</li>
+	<li>{{ subtopic }}
+		&nbsp;
+		<a href="{% url 'Subjects:edit_subtopic' subject_id=subject.id topic_id=topic.id subtopic_id=subtopic.id %}">🖋️</a>
+		&nbsp;
+		<a href="{% url 'Subjects:delete_subtopic' subject_id=subject.id topic_id=topic.id subtopic_id=subtopic.id %}">🗑️</a>
+
+	</li>
+
 	{% endfor %}
 
 

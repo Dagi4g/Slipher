@@ -88,7 +88,24 @@ def new_topic(request,subject_id):
     template = loader.get_template("Subjects/topic/new_topic.html")
     context = {"form":form,'subject':subject}
     return HttpResponse(template.render(context,request))
+# Edit Subtopic
+def edit_subtopic(request, subtopic_id, topic_id, subject_id):
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
 
+    if request.method == 'POST':
+        form = SubtopicForm(request.POST, instance=subtopic)
+        if form.is_valid():
+            form.instance.topic = topic  # ensure topic is set
+            form.save()
+            return redirect('Subjects:subtopic', subject_id=subject_id, topic_id=topic_id)
+    else:
+        form = SubtopicForm(instance=subtopic)
+
+    template = loader.get_template('Subjects/subtopic/edit_subtopic.html')
+    context = {'form': form, 'subtopic': subtopic, 'topic': topic, 'subject': subject}
+    return HttpResponse(template.render(context, request))
 
 # Edit Topic
 def edit_topic(request, topic_id,subject_id):
@@ -152,23 +169,38 @@ def new_subtopic(request,subject_id,topic_id):
     template = loader.get_template('Subjects/subtopic/new_subtopic.html')
     context = {'form':form,'subject':subject,'topic':topic,}
     return HttpResponse(template.render(context,request))
-
 # Edit Subtopic
-def edit_subtopic(request, pk):
-    subtopic = get_object_or_404(Subtopic, pk=pk)
+def edit_subtopic(request, subtopic_id, topic_id, subject_id):
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
+
     if request.method == 'POST':
         form = SubtopicForm(request.POST, instance=subtopic)
         if form.is_valid():
+            form.instance.topic = topic  # ensure topic is set
             form.save()
-            return redirect('home')
+            return redirect('Subjects:subtopic', subject_id=subject_id, topic_id=topic_id)
     else:
         form = SubtopicForm(instance=subtopic)
-    return render(request, 'edit_subtopic.html', {'form': form})
+
+    template = loader.get_template('Subjects/subtopic/edit_subtopic.html')
+    context = {'form': form, 'subtopic': subtopic, 'topic': topic, 'subject': subject}
+    return HttpResponse(template.render(context, request))
 
 # Delete Subtopic
-def delete_subtopic(request, pk):
-    subtopic = get_object_or_404(Subtopic, pk=pk)
-    subtopic.delete()
-    return redirect('home')
+def delete_subtopic(request, subject_id,topic_id,subtopic_id):
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
+
+    if request.method == "POST":
+        subtopic.delete()
+        return redirect("Subjects:subtopic",subject_id=subject_id,topic_id=topic_id)
+    template = loader.get_template("Subjects/subtopic/delete_subtopic.html")
+    context = {"subject" : subject,'topic':topic,"subtopic":subtopic.id}
+    return HttpResponse(template.render(context,request))
+
+
 
 
