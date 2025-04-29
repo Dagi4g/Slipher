@@ -1,7 +1,7 @@
 {% extends "Subjects/base.html" %}
 
 {% block content %}
-<p>Topic: {{ topic }}</p>
+<p><a href="{% url 'Subjects:subject' %}"> {{ subject }}</a>/<a href="{% url 'Subjects:topic' subject_id=subject.id %}">{{ topic }}</a></p>
 <a href="{% url 'Subjects:new_subtopic' subject_id=subject.id topic_id=topic.id %}">➕</a>
 
 {% if subtopic_list %}

@@ -33,4 +33,8 @@ urlpatterns = [
         path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic/<int:subtopic_id>/edit_subtopic",views.edit_subtopic,name="edit_subtopic"),
         path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic/<int:subtopic_id>/delete_subtopic",views.delete_subtopic,name="delete_subtopic"),
 
+
+        ##---show review---##
+        path("should_review/",views.should_review,name="should_review")
+
         ]

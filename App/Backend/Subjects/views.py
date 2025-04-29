@@ -1,9 +1,12 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404,get_list_or_404
 from django.template import loader # for loding an html file and displaying it in the browserāo
 from datetime import date
+from django.http import JsonResponse
+from django.utils import timezone
 
 
-from .models import Subjects,Topics,Subtopics
+
+from .models import Subjects,Topics,Subtopics,SubTopicMemory
 from .forms import SubjectForm,TopicForm,SubtopicForm
 
         ##---The Home Page---##
@@ -198,8 +201,34 @@ def delete_subtopic(request, subject_id,topic_id,subtopic_id):
         subtopic.delete()
         return redirect("Subjects:subtopic",subject_id=subject_id,topic_id=topic_id)
     template = loader.get_template("Subjects/subtopic/delete_subtopic.html")
-    context = {"subject" : subject,'topic':topic,"subtopic":subtopic.id}
+    context = {"subject" : subject,'topic':topic,"subtopic":subtopic}
     return HttpResponse(template.render(context,request))
+
+
+def should_review(request):
+    now = date.today()
+
+    # Filter subtopics where review date/time is <= now (due for review)
+    due_subtopics = SubTopicMemory.objects.filter(next_review__lte=now)
+
+    if due_subtopics.exists():
+        subtopics_list = []
+        for subtopic in due_subtopics:
+            subtopics_list.append({
+                "id": subtopic.id,
+                "subtopic": subtopic.subtopic.subtopic_name, 
+                "next_review": subtopic.next_review.isoformat(),
+            })
+
+        return JsonResponse({
+            "should_review": True,
+            "subtopics": subtopics_list
+        })
+    else:
+        return JsonResponse({
+            "should_review": False,
+            "subtopics": []
+        })
 
 
 
