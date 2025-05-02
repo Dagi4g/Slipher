@@ -16,6 +16,8 @@ class Topics(models.Model):
     topic_name = models.CharField(max_length=500)
 
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    class Meta:
+        unique_together = ("topic_name","subject")
     
     def __str__(self):
         return self.topic_name
@@ -26,6 +28,8 @@ class Subtopics(models.Model):
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 
     last_seen = models.DateTimeField(date.today().isoformat())
+    class Meta:
+        unique_together = ("subtopic_name","topic")
 
     def __str__(self):
         return self.subtopic_name
@@ -106,20 +110,17 @@ class SubTopicMemory(models.Model):
             self.calculate_next_review(base_interval)
 
 
-
-
-
-
     def update_memory(self, remembered: bool):
         if remembered:
             self.memory_strength += 0.1
             self.revision_count += 1 # another addtional revision.
-            self.strength += 0.1
-            self.subtopic.rating = min(5,self.subtopic.rating + 0.1)
+            self.subtopic.rating = min(5,self.subtopic.rating + 0.3)
         else:
             self.interval = 1
-            self.memory_strength = max(1.3, self.strength - 0.1)
-            self.subtopic.rating = max(2.0, self.subtopic.rating + 0.3)
+            self.memory_strength = max(1.3, self.memory_strength - 0.1)
+            #no matter the subtopic rating (even zero at first) it's minimum value will be 1.5.
+
+            self.subtopic.rating = max(1.5, self.subtopic.rating - 0.3)
 
         
 

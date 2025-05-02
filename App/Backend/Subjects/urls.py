@@ -35,6 +35,9 @@ urlpatterns = [
 
 
         ##---show review---##
-        path("should_review/",views.should_review,name="should_review")
+        path("should_review/",views.should_review,name="should_review"),
+
+        path("remembered/",views.remembered,name="rememebered"),
+        path("forgot/",views.forgot,name="forgot"),
 
         ]

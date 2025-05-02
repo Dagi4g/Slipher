@@ -3,6 +3,8 @@ from django.template import loader # for loding an html file and displaying it i
 from datetime import date
 from django.http import JsonResponse
 from django.utils import timezone
+from django.db.utils import IntegrityError
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -82,9 +84,12 @@ def new_topic(request,subject_id):
     if request.method == 'POST':
         form = TopicForm(request.POST,initial={'subject':subject})
         if form.is_valid():
-            topic = form.save(commit=False)
-            topic.subject = subject
-            topic.save()
+            try:
+                topic = form.save(commit=False)
+                topic.subject = subject
+                topic.save()
+            except IntegrityError :
+                return HttpResponse(f"{topic.topic_name} already exists")
             return redirect('Subjects:topic',subject_id=subject_id)
     else:
         form = TopicForm()
@@ -205,6 +210,8 @@ def delete_subtopic(request, subject_id,topic_id,subtopic_id):
     return HttpResponse(template.render(context,request))
 
 
+from random import choice
+
 def should_review(request):
     now = date.today()
 
@@ -212,17 +219,16 @@ def should_review(request):
     due_subtopics = SubTopicMemory.objects.filter(next_review__lte=now)
 
     if due_subtopics.exists():
-        subtopics_list = []
+        subtopic_list = []
         for subtopic in due_subtopics:
-            subtopics_list.append({
-                "id": subtopic.id,
+            subtopic_list.append({
                 "subtopic": subtopic.subtopic.subtopic_name, 
                 "next_review": subtopic.next_review.isoformat(),
             })
 
         return JsonResponse({
             "should_review": True,
-            "subtopics": subtopics_list
+            "subtopics": subtopic_list
         })
     else:
         return JsonResponse({
@@ -231,5 +237,53 @@ def should_review(request):
         })
 
 
+import json
+@csrf_exempt
+def remembered(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            subtopic_name = data.get("subtopic")
+            if not subtopic_name:
+                return HttpResponse("Missing subtopic", status=400)
+            print(subtopic_name)
+
+            subtopic = Subtopics.objects.get(subtopic_name=subtopic_name)
+            memory = SubTopicMemory.objects.get(id=subtopic.id)
+
+            memory.update_memory(remembered=True)
+            memory.save()
+
+            return HttpResponse(status=200)
+
+        except (Subtopics.DoesNotExist, SubTopicMemory.DoesNotExist):
+            return HttpResponse("Not found", status=404)
+        except Exception as e:
+            return HttpResponse(f"Server error: {e}", status=500)
+
+    return HttpResponse("Invalid method", status=400)
 
 
+@csrf_exempt
+def forgot(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            subtopic_name = data.get("subtopic")
+            if not subtopic_name:
+                return HttpResponse("Missing subtopic", status=400)
+
+            subtopic = Subtopics.objects.get(subtopic_name=subtopic_name)
+            memory = SubTopicMemory.objects.get(id=subtopic.id)
+
+            memory.update_memory(remembered=False)
+            memory.save()
+
+            return HttpResponse(status=200)
+
+        except (Subtopics.DoesNotExist, SubTopicMemory.DoesNotExist):
+            return HttpResponse("Not found", status=404)
+        except Exception as e:
+            return HttpResponse(f"Server error: {e}", status=500)
+
+    return HttpResponse("Invalid method", status=400)
