@@ -4,7 +4,7 @@
 <p> <a href="{% url 'Subjects:subject' %}">{{ subject }}</a> </p>
 <p> <a href="{% url 'Subjects:new_topic' subject.id %}">+</a><p>
 {% if topic_list %}
-<p>topics: </p>
+<h4>topics: </h4>
 <ul>
 
 	{% for topic in topic_list %}

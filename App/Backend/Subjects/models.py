@@ -3,6 +3,10 @@ from datetime import date
 from django.db import models
 from django.core.validators import MaxValueValidator,MinValueValidator
 
+from django.utils import timezone
+    
+
+
 class Subjects(models.Model):
     subject_name = models.CharField(max_length=500)
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
@@ -34,6 +38,10 @@ class Subtopics(models.Model):
     def __str__(self):
         return self.subtopic_name
 
+class SubtopicEntry(models.Model):
+    subtopic = models.ForeignKey(Subtopics,on_delete=models.CASCADE,related_name="subtopicentry")
+    text = models.TextField()
+
 from datetime import date, timedelta
 
 class SubTopicMemory(models.Model):
@@ -43,7 +51,7 @@ class SubTopicMemory(models.Model):
     #values used for calculation.
     memory_strength = models.FloatField(default=2.5)  # memory strength (like Anki's ease)
     interval = models.IntegerField(default=1)  # one day for next review days until next review
-    next_review = models.DateField(default=date.today())
+    next_review = models.DateField(default=timezone.now)
     revision_count = models.IntegerField(default=0)
 
 

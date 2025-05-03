@@ -5,7 +5,7 @@
 <a href="{% url 'Subjects:new_subtopic' subject_id=subject.id topic_id=topic.id %}">➕</a>
 
 {% if subtopic_list %}
-<p>Subtopics: </p>
+<h5>Subtopics: </h5>
 <ol>
 
 	{% for subtopic in subtopic_list%}

@@ -19,7 +19,7 @@ def slipher(requests):
 def subject(requests):
     """Show the names of the subjects in the database."""
     subjects_list = Subjects.objects.all()
-    template = loader.get_template("Subjects/subject.html")
+    template = loader.get_template("Subjects/subjects/subject.html")
     context = {
             "subjects_list" : subjects_list
             }
@@ -36,7 +36,7 @@ def new_subject(requests):
             form.save()
             #the form is valid and saved so redirect the user to the list of subjects.
             return redirect("Subjects:subject")
-    template = loader.get_template("Subjects/new_subject.html")
+    template = loader.get_template("Subjects/subjects/new_subject.html")
     context = {"form" : form}
     return HttpResponse(template.render(context,requests))# just show the form.
 
@@ -51,7 +51,7 @@ def edit_subject(request, subject_id):
             return redirect("Subjects:subject")
     else:
         form = SubjectForm(instance=subject)
-    template = loader.get_template("Subjects/edit_subject.html")
+    template = loader.get_template("Subjects/subjects/edit_subject.html")
     context =  {"form": form, "subject": subject}
 
     return HttpResponse(template.render(context,request))
@@ -62,7 +62,7 @@ def delete_subject(requests,subject_id):
     if requests.method == "POST":
         subject.delete()
         return redirect("Subjects:subject")
-    template = loader.get_template("Subjects/delete_subject.html")
+    template = loader.get_template("Subjects/subjects/delete_subject.html")
     context = {"subject" : subject}
     return HttpResponse(template.render(context,requests))
 
@@ -209,6 +209,22 @@ def delete_subtopic(request, subject_id,topic_id,subtopic_id):
     context = {"subject" : subject,'topic':topic,"subtopic":subtopic}
     return HttpResponse(template.render(context,request))
 
+#subtopic entry.
+def entry(requests,subject_id,topic_id,subtopic_id,subtopicentry_id):
+    #for displaying additional information about the subtoic the user entered.
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic_list = topic.subtopic.all()
+    #get all the entries.
+    template = loader.get_template("Subjects/entry/show_entry.html")
+    context = {
+            "subtopic_list":subtopic_list,"topic":topic,"subject":subject
+            }
+    return HttpResponse(template.render(context,requests))
+
+
+
+
 
 from random import choice
 
@@ -246,7 +262,6 @@ def remembered(request):
             subtopic_name = data.get("subtopic")
             if not subtopic_name:
                 return HttpResponse("Missing subtopic", status=400)
-            print(subtopic_name)
 
             subtopic = Subtopics.objects.get(subtopic_name=subtopic_name)
             memory = SubTopicMemory.objects.get(id=subtopic.id)
