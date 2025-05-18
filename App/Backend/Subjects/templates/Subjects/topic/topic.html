@@ -5,7 +5,7 @@
 <p> <a href="{% url 'Subjects:new_topic' subject.id %}">+</a><p>
 {% if topic_list %}
 <h4>topics: </h4>
-<ul>
+<ol>
 
 	{% for topic in topic_list %}
 	<li>
@@ -17,7 +17,7 @@
 
 	</li>
 	{% endfor %}
-</ul>
+</ol>
 {% else %}
 <p> {{ subject }} has no topic </p>
 {% endif %}

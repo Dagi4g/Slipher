@@ -31,7 +31,8 @@ class Subtopics(models.Model):
     subtopic_name = models.CharField(max_length=500)
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 
-    last_seen = models.DateTimeField(date.today().isoformat())
+    last_seen = models.DateTimeField(default=timezone.now)
+    review = models.BooleanField(default=True)
     class Meta:
         unique_together = ("subtopic_name","topic")
 
@@ -41,6 +42,10 @@ class Subtopics(models.Model):
 class SubtopicEntry(models.Model):
     subtopic = models.ForeignKey(Subtopics,on_delete=models.CASCADE,related_name="subtopicentry")
     text = models.TextField()
+    date_added = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.text
 
 from datetime import date, timedelta
 
@@ -112,10 +117,12 @@ class SubTopicMemory(models.Model):
 
     def first_review_date(self):
         """when called sets the next review day"""
-        if self.pk:
-            # the subtopic doesn'6t exist.
+        if self.pk and self.subtopic.review:
+            # the subtopic doesn't exist.
             base_interval = self.calculate_interval()
             self.calculate_next_review(base_interval)
+        else:
+            pass 
 
 
     def update_memory(self, remembered: bool):

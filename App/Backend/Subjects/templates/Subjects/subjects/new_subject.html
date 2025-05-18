@@ -6,7 +6,7 @@
     <form method="POST" action="{% url 'Subjects:new_subject' %}">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Submit</button>
+      <button type="submit">Save</button>
     </form>
   </div>
 {% endblock %}

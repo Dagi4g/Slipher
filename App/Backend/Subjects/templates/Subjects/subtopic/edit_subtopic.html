@@ -2,11 +2,12 @@
 {% block content %}
 
   <div class="container">
+	  <p><a href="{% url 'Subjects:subject' %}"> {{ subject }}</a>/<a href="{% url 'Subjects:topic' subject_id=subject.id %}">{{ topic }}</a>/<a href="{% url 'Subjects:subtopic' subject_id=subject.id topic_id=topic.id %}">{{ subtopic }}</a></p>
     <h2>edit subtopic</h2>
     <form method="POST" action="{% url 'Subjects:edit_subtopic' topic_id=topic.id subject_id=subject.id subtopic_id=subtopic.id %}">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Submit</button>
+      <button type="submit">Save</button>
     </form>
   </div>
 {% endblock %}

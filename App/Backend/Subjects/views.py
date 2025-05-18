@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 from .models import Subjects,Topics,Subtopics,SubTopicMemory
-from .forms import SubjectForm,TopicForm,SubtopicForm
+from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
         ##---The Home Page---##
 def slipher(requests):
@@ -210,18 +210,78 @@ def delete_subtopic(request, subject_id,topic_id,subtopic_id):
     return HttpResponse(template.render(context,request))
 
 #subtopic entry.
-def entry(requests,subject_id,topic_id,subtopic_id,subtopicentry_id):
+def entry(requests,subject_id,topic_id,subtopic_id):
     #for displaying additional information about the subtoic the user entered.
     subject = Subjects.objects.get(id=subject_id)
     topic = subject.topic.get(id=topic_id)
-    subtopic_list = topic.subtopic.all()
+    subtopic = topic.subtopic.get(id=subtopic_id)
+    entries = subtopic.subtopicentry.all()
     #get all the entries.
-    template = loader.get_template("Subjects/entry/show_entry.html")
+    template = loader.get_template("Subjects/subtopic/entry/show_entry.html")
     context = {
-            "subtopic_list":subtopic_list,"topic":topic,"subject":subject
+            "subtopic":subtopic,"topic":topic,"subject":subject,"entries":entries,
             }
     return HttpResponse(template.render(context,requests))
 
+
+
+
+# adding entry.
+
+def new_entry(request,subject_id,topic_id,subtopic_id):
+    """Add creating new text data about a particular subtopic"""
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
+    if request.method == 'POST':
+        form = SubtopicEntryForm(request.POST)
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.subtopic = subtopic
+            entry.save()
+            return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id ,subtopic_id=subtopic_id)
+    else:
+        form = SubtopicEntryForm()
+    template = loader.get_template('Subjects/subtopic/entry/new_entry.html')
+    context = {'form':form,'subject':subject,'topic':topic,"subtopic":subtopic}
+    return HttpResponse(template.render(context,request))
+
+# editing entry.
+def edit_entry(request, subtopic_id, topic_id, subject_id,entry_id):
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
+    entry = subtopic.subtopicentry.get(id=entry_id)
+    print(entry.id)
+
+    if request.method == 'POST':
+        form = SubtopicEntryForm(request.POST,instance=entry)
+        if form.is_valid():
+            form.instance.subtopic = subtopic  # ensure topic is set
+            form.save()
+            return redirect('Subjects:subtopic_entry', subject_id=subject_id, topic_id=topic_id, subtopic_id=subtopic_id,)
+    else:
+        form = SubtopicEntryForm(instance=entry)
+
+    template = loader.get_template('Subjects/subtopic/entry/edit_entry.html')
+    context = {'form': form, 'entry':entry,'subtopic': subtopic, 'topic': topic, 'subject': subject}
+    return HttpResponse(template.render(context, request))
+
+
+
+# Delete entry
+def delete_entry(request, subject_id,topic_id,subtopic_id,entry_id):
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
+    entry = subtopic.subtopicentry.get(id=entry_id)
+
+    if request.method == "POST":
+        entry.delete()
+        return redirect("Subjects:subtopic_entey",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
+    template = loader.get_template("Subjects/subtopic/entry/delete_entry.html")
+    context = { "entry":entry,"subject" : subject,'topic':topic,"subtopic":subtopic}
+    return HttpResponse(template.render(context,request))
 
 
 
@@ -239,8 +299,11 @@ def should_review(request):
         for subtopic in due_subtopics:
             subtopic_list.append({
                 "subtopic": subtopic.subtopic.subtopic_name, 
+                "topic": subtopic.subtopic.topic.topic_name, 
+                "subject": subtopic.subtopic.topic.subject.subject_name, 
                 "next_review": subtopic.next_review.isoformat(),
             })
+        print(subtopic_list[0]["subject"])
 
         return JsonResponse({
             "should_review": True,
@@ -251,6 +314,14 @@ def should_review(request):
             "should_review": False,
             "subtopics": []
         })
+
+def show_planned(request,subject_id,topic_id,subtopic_id):
+    subject = Subjects.objects.get(id=subject_id)
+    topic = subject.topic.get(id=topic_id)
+    subtopic = topic.subtopic.get(id=subtopic_id)
+    
+
+ 
 
 
 import json

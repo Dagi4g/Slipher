@@ -1,10 +1,14 @@
 function showPopup(subjectName) {
     const popup = document.getElementById('popup');
     const overlay = document.getElementById('overlay');
-    const nameElement = document.getElementById('subtopic-name');
+    const subtopicElement = document.getElementById('subtopic-name');
+    const topicElement = document.getElementById('topic-name');
+    const subjectElement = document.getElementById('subject-name');
     
     if (subjectName) {  // This checks for null, undefined, and empty strings
-        nameElement.textContent = subjectName;
+        subtopicElement.textContent = subjectName.subtopic;
+        topicElement.textContent = subjectName.topic;
+        subjectElement.textContent = subjectName.subject;
         popup.style.display = 'block';
         overlay.style.display = 'block';
     } else {
@@ -91,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		.then(data => {
 
 			if (data.should_review && data.subtopics.length > 0) {
-				showPopup(data.subtopics[0].subtopic);
+				showPopup(data.subtopics[0]);
 				
 			}
 		})

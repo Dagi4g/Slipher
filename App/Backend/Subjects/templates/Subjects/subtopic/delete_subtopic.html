@@ -2,6 +2,7 @@
 
 {% block content %}
    <div>
+	   <p><a href="{% url 'Subjects:subject' %}"> {{ subject }}</a>/<a href="{% url 'Subjects:topic' subject_id=subject.id %}">{{ topic }}</a></p>
 	   <h2>are you sure you want to delete '{{ subtopic.subtopic_name}}'?</h2>
 	   <form method="POST">
 		{% csrf_token %}

@@ -1,0 +1,14 @@
+{% extends "Subjects/base.html" %}
+{% block content %}
+
+<p><a href="{% url 'Subjects:subject' %}"> {{ subject }}</a>/<a href="{% url 'Subjects:topic' subject_id=subject.id %}">{{ topic }}</a>/<a href="{% url 'Subjects:subtopic' subject_id=subject.id topic_id=topic.id %}">{{ subtopic }} </a> </p>
+
+  <div class="container">
+    <h2>edit entry</h2>
+    <form method="POST" action="{% url 'Subjects:edit_entry' topic_id=topic.id subject_id=subject.id subtopic_id=subtopic.id entry_id=entry.id%}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
+  </div>
+{% endblock %}

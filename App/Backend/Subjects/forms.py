@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Subjects,Topics,Subtopics
+from .models import Subjects,Topics,Subtopics,SubtopicEntry
 
 class SubjectForm(forms.ModelForm):
     """form.ModelForm is used to manage the database operations"""
@@ -17,4 +17,9 @@ class TopicForm(forms.ModelForm):
 class SubtopicForm(forms.ModelForm):
     class Meta:
         model = Subtopics
-        fields = [ 'subtopic_name', 'last_seen','rating']
+        fields = [ 'subtopic_name', 'last_seen','rating','review']
+
+class SubtopicEntryForm(forms.ModelForm):
+    class Meta:
+        model = SubtopicEntry
+        fields = [ 'text' ]

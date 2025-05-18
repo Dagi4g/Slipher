@@ -1,15 +1,15 @@
 {% extends "Subjects/base.html" %}
 
+
 {% block content %}
 
-<div class="container">  
-	<h2>add subtopic to {{ topic.topic_name}}</h2>
-	<form method="POST" action="{% url 'Subjects:new_subtopic' subject_id=subject.id topic_id=topic.id %}">
-		<input type='hidden' name='subject_id' value='{{ subject.id }}' >
-			
+<div class="container">
+	<p><a href="{% url 'Subjects:subject' %}"> {{ subject }}</a>/<a href="{% url 'Subjects:topic' subject_id=subject.id %}">{{ topic }}</a></p>
+	<h2>add subtopic to '{{ topic.topic_name}}'</h2>
+	<form method="POST" action="{% url 'Subjects:new_subtopic' subject_id=subject.id topic_id=topic.id %}">	
 		{% csrf_token %}
 		{{ form.as_p }}
-	<button type="submit">Submit</button>
+	<button type="submit">Save</button>
 	</form>
 </div>
 
