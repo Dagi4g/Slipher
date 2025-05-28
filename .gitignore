@@ -1,5 +1,5 @@
 __pycache__/
-slipher_venv/
+Slipher_venv/
 *.db
 *.sqlite3
 *.swp
