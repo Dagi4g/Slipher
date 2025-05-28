@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404,get_list_or_404
 from django.template import loader # for loding an html file and displaying it in the browserāo
 from datetime import date
@@ -177,7 +179,6 @@ def new_subtopic(request,subject_id,topic_id):
     template = loader.get_template('Subjects/subtopic/new_subtopic.html')
     context = {'form':form,'subject':subject,'topic':topic,}
     return HttpResponse(template.render(context,request))
-# Edit Subtopic
 def edit_subtopic(request, subtopic_id, topic_id, subject_id):
     subject = Subjects.objects.get(id=subject_id)
     topic = subject.topic.get(id=topic_id)
@@ -303,7 +304,6 @@ def should_review(request):
                 "subject": subtopic.subtopic.topic.subject.subject_name, 
                 "next_review": subtopic.next_review.isoformat(),
             })
-        print(subtopic_list[0]["subject"])
 
         return JsonResponse({
             "should_review": True,
@@ -316,14 +316,18 @@ def should_review(request):
         })
 
 def show_planned(request,subject_id,topic_id,subtopic_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-    
+    subtopic = Subtopics.objects.get(review=False)
+    topic = subtopic.topic
+    subject = topic.subject
+    context = { 'subject' : subject,
+                'topic' : topic,
+                'subtopic' : subtopic,
+               }
+    template = loader.get_template('Subjects/templates/Subjects/planned/show_subjects.html')
+    return HttpResponse(template.render(context,request))
+
 
  
-
-
 import json
 @csrf_exempt
 def remembered(request):

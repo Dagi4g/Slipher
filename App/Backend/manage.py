@@ -1,3 +1,9 @@
+
+#Copy write 2025 Dagim.
+#
+# Licensed under the Apache License, Version 2.0 (the "
+
+
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
