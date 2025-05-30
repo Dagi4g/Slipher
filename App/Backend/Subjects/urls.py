@@ -49,5 +49,7 @@ urlpatterns = [
 
         path("remembered/",views.remembered,name="rememebered"),
         path("forgot/",views.forgot,name="forgot"),
+        path("planned_subject",views.show_planned_subject,name='planned_subject'),
 
         ]
+

@@ -314,16 +314,16 @@ def should_review(request):
             "should_review": False,
             "subtopics": []
         })
-
-def show_planned(request,subject_id,topic_id,subtopic_id):
-    subtopic = Subtopics.objects.get(review=False)
-    topic = subtopic.topic
-    subject = topic.subject
-    context = { 'subject' : subject,
+from django.db.models import Prefetch
+def show_planned_subject(request):
+    subtopic = Subtopics.objects.filter(review=False)
+    topic = Topics.objects.prefetch_related(Prefetch('subtopic',queryset=subtopic,to_attr='planned_subtopic'))
+    subjects = Subjects.objects.prefetch_related(Prefetch('topic',queryset=topic,to_attr='planned_topic'))
+    context = { 'subjects' : subjects,
                 'topic' : topic,
                 'subtopic' : subtopic,
                }
-    template = loader.get_template('Subjects/templates/Subjects/planned/show_subjects.html')
+    template = loader.get_template('Subjects/planned/planned_subject.html')
     return HttpResponse(template.render(context,request))
 
 
