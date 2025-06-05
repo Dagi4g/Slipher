@@ -1,0 +1,18 @@
+{% extends "Subjects/base.html" %}
+
+{% block content %}
+
+<h3>Subjects: </h3>
+{% if subjects %}
+	<ol>
+		{% for subject in subjects %}
+		<p> {{ subject }} </P>
+		{% endfor %}
+	</ol>
+
+{% else %}
+	<p> there is no subject </p>
+{% endif %}
+{% endblock content %}
+
+

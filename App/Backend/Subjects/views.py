@@ -14,8 +14,6 @@ from .models import Subjects,Topics,Subtopics,SubTopicMemory
 from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
         ##---The Home Page---##
-def slipher(requests):
-    return render(requests,"Subjects/slipher.html")
 
         ##---Subject related operation---##
 def subject(requests):
@@ -279,7 +277,7 @@ def delete_entry(request, subject_id,topic_id,subtopic_id,entry_id):
 
     if request.method == "POST":
         entry.delete()
-        return redirect("Subjects:subtopic_entey",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
+        return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
     template = loader.get_template("Subjects/subtopic/entry/delete_entry.html")
     context = { "entry":entry,"subject" : subject,'topic':topic,"subtopic":subtopic}
     return HttpResponse(template.render(context,request))
@@ -325,6 +323,20 @@ def show_planned_subject(request):
                }
     template = loader.get_template('Subjects/planned/planned_subject.html')
     return HttpResponse(template.render(context,request))
+
+def show_planned_topic(request,subject_id):
+    subject = Subjects.objects.get(id=subject_id)
+
+    topic = Topics.objects.filter(subject=subject,subtopic__review=False)
+
+    template = loader.get_template('Subjects/planned/planned_topic.html')
+    context = { 'subject': subject,
+               'topic' : topic
+               }
+    return HttpResonse(template.render(context,request))
+
+    
+
 
 
  

@@ -5,12 +5,13 @@
 from django.urls import path,include
 
 from . import views
+from . import views0
 
 app_name = "Subjects"
 
 urlpatterns = [
         #home page for slipher.
-        path("",views.slipher,name="slipher"),
+        path("",views0.slipher,name="slipher"),
         #show the list of subjects.
         ##---subject_related---##
         path("slipher/subject",views.subject,name="subject"),
@@ -49,7 +50,10 @@ urlpatterns = [
 
         path("remembered/",views.remembered,name="rememebered"),
         path("forgot/",views.forgot,name="forgot"),
+
+        ##---plan---##
         path("planned_subject",views.show_planned_subject,name='planned_subject'),
+        path("planned_subject/<int:subject_id>/planned_topic",views.show_planned_subject,name='planned_subject'),
 
         ]
 

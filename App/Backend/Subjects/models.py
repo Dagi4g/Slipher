@@ -38,6 +38,7 @@ class Subtopics(models.Model):
     last_seen = models.DateTimeField(default=timezone.now)
     review = models.BooleanField(default=True)
     class Meta:
+        """prevent a topic from having the same subtopic."""
         unique_together = ("subtopic_name","topic")
 
     def __str__(self):
