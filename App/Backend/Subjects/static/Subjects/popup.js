@@ -87,7 +87,8 @@ function forgot() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-	fetch('/should_review/')
+	setTimeout(function(){
+		fetch('/should_review/')
 		.then(response => {
 			if (!response.ok) throw new Error('Network error');
 			return response.json();
@@ -105,5 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     // showPopup('your recent topics');
 
 		});
+	},600000 ); // a ten minute brake to not annoy the user by showing review quickly.
 
 });

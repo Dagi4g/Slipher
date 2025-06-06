@@ -351,7 +351,7 @@ def remembered(request):
                 return HttpResponse("Missing subtopic", status=400)
 
             subtopic = Subtopics.objects.get(subtopic_name=subtopic_name)
-            memory = SubTopicMemory.objects.get(id=subtopic.id)
+            memory = SubTopicMemory.objects.get(subtopic=subtopic)
 
             memory.update_memory(remembered=True)
             memory.save()
@@ -376,7 +376,7 @@ def forgot(request):
                 return HttpResponse("Missing subtopic", status=400)
 
             subtopic = Subtopics.objects.get(subtopic_name=subtopic_name)
-            memory = SubTopicMemory.objects.get(id=subtopic.id)
+            memory = SubTopicMemory.objects.get(subtopic=subtopic)
 
             memory.update_memory(remembered=False)
             memory.save()
