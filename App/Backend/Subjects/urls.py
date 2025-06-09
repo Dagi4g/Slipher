@@ -14,18 +14,18 @@ urlpatterns = [
         path("",views0.slipher,name="slipher"),
         #show the list of subjects.
         ##---subject_related---##
-        path("slipher/subject",views.subject,name="subject"),
+        path("slipher/subject",views0.SubjectListView.as_view(),name="subject"),
         #add new subject
-        path("subject/new_subject",views.new_subject,name="new_subject"),
+        path("subject/new_subject",views0.SubjectCreateView.as_view(),name="new_subject"),
         #edit existing subject
-        path("subject/<int:subject_id>/edit_subject",views.edit_subject,name="edit_subject"),
+        path("subject/<int:subject_id>/edit_subject",views0.SubjectUpdateView.as_view(),name="edit_subject"),
         #delte an existing subject.
-        path("subject/<int:subject_id>/delete_subject",views.delete_subject,name="delete_subject"),
+        path("subject/<int:subject_id>/delete_subject",views0.SubjectDeleteView.as_view(),name="delete_subject"),
 
 
         ##---topic related---##
         #show the list of topics.
-        path("subject/<int:subject_id>/topic",views.topic,name="topic"),
+        path("subject/<int:subject_id>/topic",views0.TopicListView.as_view(),name="topic"),
         path("subject/<int:subject_id>/topic/new_topic",views.new_topic,name="new_topic"),
         path("subject/<int:subject_id>/topic/<int:topic_id>/edit_topic/",views.edit_topic,name="edit_topic"),
         path("subject/<int:subject_id>/topic/<int:topic_id>/delete_topic/",views.delete_topic,name="delete_topic"),

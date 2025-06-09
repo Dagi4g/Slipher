@@ -10,7 +10,7 @@
 	{% for entry in entries %}
 	<li>
 		<p>{{ entry.date_added }}</p>
-		<p>{{ entry.text|linebreaks }}  <a href="{% url 'Subjects:edit_entry' subject_id=subject.id topic_id=topic.id subtopic_id=subtopic.id entry_id=entry.id %}">🖋️</a>  <a href="{% url 'Subjects:delete_entry' subject_id=subject.id topic_id=topic.id subtopic_id=subtopic.id entry_id=entry.id %}">🗑️</a></p>
+		<div style="white-space: pre-wrap">{{ entry.text}}</div>  <p><a href="{% url 'Subjects:edit_entry' subject_id=subject.id topic_id=topic.id subtopic_id=subtopic.id entry_id=entry.id %}">🖋️</a>  <a href="{% url 'Subjects:delete_entry' subject_id=subject.id topic_id=topic.id subtopic_id=subtopic.id entry_id=entry.id %}">🗑️</a></p>
 	</li>
 	{% empty %}
 	<p>{{ subtopic }} has no entries.</p>

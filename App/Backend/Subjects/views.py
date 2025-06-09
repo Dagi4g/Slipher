@@ -16,61 +16,12 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
         ##---The Home Page---##
 
         ##---Subject related operation---##
-def subject(requests):
-    """Show the names of the subjects in the database."""
-    subjects_list = Subjects.objects.all()
-    template = loader.get_template("Subjects/subjects/subject.html")
-    context = {
-            "subjects_list" : subjects_list
-            }
-    return HttpResponse(template.render(context,requests))
-
-def new_subject(requests):
-    """add new subject to the database"""
-    if requests.method != "POST":
-        #the user didn't add any data,so create a blank form.
-        form = SubjectForm()
-    else:
-        form = SubjectForm(requests.POST)
-        if form.is_valid():
-            form.save()
-            #the form is valid and saved so redirect the user to the list of subjects.
-            return redirect("Subjects:subject")
-    template = loader.get_template("Subjects/subjects/new_subject.html")
-    context = {"form" : form}
-    return HttpResponse(template.render(context,requests))# just show the form.
-
-
-def edit_subject(request, subject_id): 
-    subject = get_object_or_404(Subjects, id=subject_id)
-    if request.method == "POST":
-        form = SubjectForm(request.POST, instance=subject)
-        if form.is_valid():
-            form.instance.subject_name = subject.subject_name  # Ensure subject name remains the same
-            form.save()
-            return redirect("Subjects:subject")
-    else:
-        form = SubjectForm(instance=subject)
-    template = loader.get_template("Subjects/subjects/edit_subject.html")
-    context =  {"form": form, "subject": subject}
-
-    return HttpResponse(template.render(context,request))
-
-
-def delete_subject(requests,subject_id):
-    subject = get_object_or_404(Subjects,id=subject_id)
-    if requests.method == "POST":
-        subject.delete()
-        return redirect("Subjects:subject")
-    template = loader.get_template("Subjects/subjects/delete_subject.html")
-    context = {"subject" : subject}
-    return HttpResponse(template.render(context,requests))
 
 
         ##---topic related views.---##
 def topic(requests,subject_id):
     """show the topics of a particular subject."""
-    subject = Subjects.objects.get(id=subject_id)#the name of the subject is needed inorder to show its topic.
+    subject = get_object_or_404(Subjects,id=subject_id)#the name of the subject is needed inorder to show its topic.
     topic_list = subject.topic.all()
     template = loader.get_template("Subjects/topic/topic.html")
     context = {
@@ -96,28 +47,9 @@ def new_topic(request,subject_id):
     template = loader.get_template("Subjects/topic/new_topic.html")
     context = {"form":form,'subject':subject}
     return HttpResponse(template.render(context,request))
-# Edit Subtopic
-def edit_subtopic(request, subtopic_id, topic_id, subject_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-
-    if request.method == 'POST':
-        form = SubtopicForm(request.POST, instance=subtopic)
-        if form.is_valid():
-            form.instance.topic = topic  # ensure topic is set
-            form.save()
-            return redirect('Subjects:subtopic', subject_id=subject_id, topic_id=topic_id)
-    else:
-        form = SubtopicForm(instance=subtopic)
-
-    template = loader.get_template('Subjects/subtopic/edit_subtopic.html')
-    context = {'form': form, 'subtopic': subtopic, 'topic': topic, 'subject': subject}
-    return HttpResponse(template.render(context, request))
-
 # Edit Topic
 def edit_topic(request, topic_id,subject_id):
-    subject = Subjects.objects.get(id=subject_id)
+    subject = get_object_or_404(id=subject_id)
     topic = subject.topic.get(id=topic_id)
     if request.method == 'POST':
         form = TopicForm(request.POST, instance=topic)
@@ -161,8 +93,8 @@ def subtopics(requests,subject_id,topic_id):
 
 # Add Subtopic
 def new_subtopic(request,subject_id,topic_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
+    subject = get_object_or_404(Subjects,id=subject_id)
+    topic = get_object_or_404(subject.topic,id=topic_id)
     last_seen = date.today().isoformat()
     initial_data = { 'last_seen':last_seen}
     if request.method == 'POST':
@@ -178,9 +110,9 @@ def new_subtopic(request,subject_id,topic_id):
     context = {'form':form,'subject':subject,'topic':topic,}
     return HttpResponse(template.render(context,request))
 def edit_subtopic(request, subtopic_id, topic_id, subject_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
+    subject = get_object_or_404(Subjects,id=subject_id)
+    topic = get_object_or_404(subject.topic,id=topic_id)
+    subtopic = get_object_or_404(topic.subtopic,id=subtopic_id)
 
     if request.method == 'POST':
         form = SubtopicForm(request.POST, instance=subtopic)
