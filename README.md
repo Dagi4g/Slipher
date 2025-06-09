@@ -72,7 +72,7 @@ Slipher currently focuses on **fundamental features** to ensure the app is stabl
 ## 📥 How to Install
 1. **Clone the Repository:**
    ```bash
-   git clone <https://github.com/Dagi4g/Slifer-.git>
+   git clone <https://github.com/<use-name>/Slifer-.git>
    
    ```
 
