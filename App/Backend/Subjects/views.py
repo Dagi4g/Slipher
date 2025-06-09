@@ -19,24 +19,7 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
 
         ##---topic related views.---##
-# Add Topic
-def new_topic(request,subject_id):
-    subject = get_object_or_404(Subjects,id=subject_id)
-    if request.method == 'POST':
-        form = TopicForm(request.POST,initial={'subject':subject})
-        if form.is_valid():
-            try:
-                topic = form.save(commit=False)
-                topic.subject = subject
-                topic.save()
-            except IntegrityError :
-                return HttpResponse(f"{topic.topic_name} already exists")
-            return redirect('Subjects:topic',subject_id=subject_id)
-    else:
-        form = TopicForm()
-    template = loader.get_template("Subjects/topic/new_topic.html")
-    context = {"form":form,'subject':subject}
-    return HttpResponse(template.render(context,request))
+
 # Edit Topic
 def edit_topic(request, topic_id,subject_id):
     subject = get_object_or_404(id=subject_id)
