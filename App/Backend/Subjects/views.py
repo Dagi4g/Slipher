@@ -19,16 +19,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
 
         ##---topic related views.---##
-def topic(requests,subject_id):
-    """show the topics of a particular subject."""
-    subject = get_object_or_404(Subjects,id=subject_id)#the name of the subject is needed inorder to show its topic.
-    topic_list = subject.topic.all()
-    template = loader.get_template("Subjects/topic/topic.html")
-    context = {
-            "topic_list":topic_list,"subject":subject
-            }
-    return HttpResponse(template.render(context,requests))
-
 # Add Topic
 def new_topic(request,subject_id):
     subject = get_object_or_404(Subjects,id=subject_id)
