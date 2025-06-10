@@ -19,18 +19,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
 
         ##---topic related views.---##
-# Delete Topic
-def delete_topic(request, subject_id,topic_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-
-    if request.method == "POST":
-        topic.delete()
-        return redirect("Subjects:topic",subject_id=subject_id)
-    template = loader.get_template("Subjects/topic/delete_topic.html")
-    context = {"subject" : subject,'topic':topic}
-    return HttpResponse(template.render(context,request))
-
 
         ##---Subtopic related views---##
 

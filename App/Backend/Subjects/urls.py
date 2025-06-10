@@ -28,7 +28,7 @@ urlpatterns = [
         path("subject/<int:subject_id>/topic",views0.TopicListView.as_view(),name="topic"),
         path("subject/<int:subject_id>/topic/new_topic",views0.TopicCreateView.as_view(),name="new_topic"),
         path("subject/<int:subject_id>/topic/<int:topic_id>/edit_topic/",views0.TopicUpdateView.as_view(),name="edit_topic"),
-        path("subject/<int:subject_id>/topic/<int:topic_id>/delete_topic/",views.delete_topic,name="delete_topic"),
+        path("subject/<int:subject_id>/topic/<int:topic_id>/delete_topic/",views0.TopicDeleteView.as_view(),name="delete_topic"),
 
 
         ##---subtopic_related---##

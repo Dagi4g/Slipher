@@ -2,7 +2,7 @@
 from .homepage import slipher
 from .subject import SubjectListView,SubjectCreateView,SubjectUpdateView,SubjectDeleteView
 
-from .topic import TopicListView,TopicCreateView,TopicUpdateView
+from .topic import TopicListView,TopicCreateView,TopicUpdateView,TopicDeleteView
 
 __all__ = [
         'slipher',
@@ -13,5 +13,6 @@ __all__ = [
         #topic related views.
         "TopicListView",
         "TopicCreateView",
-        "TopicUpdateView"
+        "TopicUpdateView",
+        "TopicDeleteView"
         ]
