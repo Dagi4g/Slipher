@@ -19,24 +19,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
 
         ##---topic related views.---##
-
-# Edit Topic
-def edit_topic(request, topic_id,subject_id):
-    subject = get_object_or_404(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    if request.method == 'POST':
-        form = TopicForm(request.POST, instance=topic)
-        if form.is_valid():
-            form.instance.topic_name = topic.topic_name
-            form.save()
-            return redirect('Subjects:topic',subject_id=subject_id)
-    else:
-        form = TopicForm(instance=topic)
-
-    template = loader.get_template('Subjects/topic/edit_topic.html')
-    context = {'form':form,'topic':topic,'subject':subject}
-    return HttpResponse(template.render(context,request))
-
 # Delete Topic
 def delete_topic(request, subject_id,topic_id):
     subject = Subjects.objects.get(id=subject_id)
