@@ -33,8 +33,8 @@ urlpatterns = [
 
         ##---subtopic_related---##
         #show the list of subtopics.
-        path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic",views.subtopics,name="subtopic"),
-        path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic/new_subtopic",views.new_subtopic,name="new_subtopic"),
+        path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic",views0.SubtopicListView.as_view(),name="subtopic"),
+        path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic/new_subtopic",views0.SubtopicCreateView.as_view(),name="new_subtopic"),
         path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic/<int:subtopic_id>/edit_subtopic",views.edit_subtopic,name="edit_subtopic"),
         path("subject/<int:subject_id>/topic/<int:topic_id>/subtopic/<int:subtopic_id>/delete_subtopic",views.delete_subtopic,name="delete_subtopic"),
 

@@ -22,18 +22,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
         ##---Subtopic related views---##
 
-def subtopics(requests,subject_id,topic_id):
-    """show all the availble subtopics in a perticular topic."""
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic_list = topic.subtopic.all()
-    #get all the topics.
-    template = loader.get_template("Subjects/subtopic/subtopic.html")
-    context = {
-            "subtopic_list":subtopic_list,"topic":topic,"subject":subject
-            }
-    return HttpResponse(template.render(context,requests))
-
 # Add Subtopic
 def new_subtopic(request,subject_id,topic_id):
     subject = get_object_or_404(Subjects,id=subject_id)
