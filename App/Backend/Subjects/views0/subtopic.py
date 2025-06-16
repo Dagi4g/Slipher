@@ -5,6 +5,7 @@ from django.db.utils import IntegrityError
 
 from Subjects import models,forms
 
+
 class SubtopicListView(ListView):
     model = models.Subtopics
     template_name = "Subjects/subtopic/subtopic.html"
@@ -15,7 +16,6 @@ class SubtopicListView(ListView):
         topic = subject.topic.get(id=self.kwargs["topic_id"])
         subtopic = topic.subtopic.all()
         return subtopic
-
     def get_context_data(self,**kwargs):
         subject = get_object_or_404(models.Subjects,id=self.kwargs["subject_id"])
         topic = subject.topic.get(id=self.kwargs["topic_id"])
@@ -26,20 +26,26 @@ class SubtopicListView(ListView):
         context["subtopic_list"] = subtopic_list
         return context
 
+
 class SubtopicCreateView(CreateView):
      model = models.Subtopics
      template_name = 'Subjects/subtopic/new_subtopic.html'
      form_class = forms.SubtopicForm
 
      def get_success_url(self):
-         return reverse_lazy("Subject:subtopic",kwargs={"subject_id":self.kwargs["subject_id"],"topic_id":self.kwargs["topic_id"]})
+         return reverse_lazy("Subjects:subtopic",kwargs={"subject_id":self.kwargs["subject_id"],"topic_id":self.kwargs["topic_id"]})
 
      def get_context_data(self,**kwargs):
-         context = super().get_context_data(**kwargs)
          subject = get_object_or_404(models.Subjects,id=self.kwargs["subject_id"])
-         topic = subject.topic.get(id=self.kwargs["topic_id"])
-         context["subject"], context["topic"] = subject, topic
+         #using subject.toic.get(id=self.kwargs["topic_id"]) is simple but to prevent injection attack get_objec_or_404 is used twice.
+         print(subject)
+         topic = get_object_or_404(models.Topics,id=self.kwargs["topic_id"],subject=subject)
+         context = super().get_context_data(**kwargs)
+         context["subject"] = subject
+         context["topic"] = topic
          return context
+
+
 
      def form_valid(self,form):
          subject = get_object_or_404(models.Subjects,id=self.kwargs["subject_id"])
@@ -52,4 +58,56 @@ class SubtopicCreateView(CreateView):
 
       
         
+class SubtopicUpdateView(UpdateView):
+    model = models.Subtopics
+    template_name = 'Subjects/subtopic/edit_subtopic.html'
+    form_class = forms.SubtopicForm
+
+    def get_object(self):
+        return get_object_or_404(models.Subtopics,id=self.kwargs["subtopic_id"])
+
+
+    def get_success_url(self):
+        return reverse_lazy("Subjects:subtopic",kwargs={"subject_id":self.kwargs["subject_id"],"topic_id":self.kwargs["topic_id"]})
+
+
+    def form_valid(self,form):
+        topic = get_object_or_404(models.Topics,id =self.kwargs["topic_id"])
+        form.instance.topic = topic
+        try: 
+            return super().form_valid(form)
+        except IntegrityError:
+            return HttpResponse(f"{form.cleaned_data['subtopic_name']} already exists.")
+
+    def get_context_data(self,**kwargs):
+        subject = get_object_or_404(models.Subjects,id=self.kwargs["subject_id"])
+        #using subject.toic.get(id=self.kwargs["topic_id"]) is simple but to prevent injection attack get_objec_or_404 is used twice.
+        print(subject)
+        topic = get_object_or_404(models.Topics,id=self.kwargs["topic_id"],subject=subject)
+        subtopic = get_object_or_404(models.Subtopics,id=self.kwargs["subtopic_id"],topic=topic)
+        context = super().get_context_data(**kwargs)
+        context["subject"] = subject
+        context["topic"] = topic
+        context["subtopic"] = subtopic
+        return context
+
+class SubtopicDeleteView(DeleteView):
+    model = models.Subtopics
+    form_class = forms.SubtopicForm
+    template_name = "Subjects/subtopic/delete_subtopic.html"
+    def get_object(self):
+        return get_object_or_404(models.Subtopics,id=self.kwargs["subtopic_id"])
+
+    def get_context_data(self,**kwargs):
+        subject = get_object_or_404(models.Subjects,id=self.kwargs["subject_id"])
+        topic = get_object_or_404(models.Topics,id=self.kwargs["topic_id"])
+        subtopic = get_object_or_404(models.Subtopics,id=self.kwargs["subtopic_id"])
+        context = super().get_context_data(**kwargs)
+        context["subject"] = subject
+        context["topic"] = topic
+        context["subtopic"] = subtopic
+        return context
+
+    def form_valid(self):
+        topic = get_object_or_404(models.Topic)
 

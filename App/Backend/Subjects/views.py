@@ -22,24 +22,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
         ##---Subtopic related views---##
 
-# Add Subtopic
-def new_subtopic(request,subject_id,topic_id):
-    subject = get_object_or_404(Subjects,id=subject_id)
-    topic = get_object_or_404(subject.topic,id=topic_id)
-    last_seen = date.today().isoformat()
-    initial_data = { 'last_seen':last_seen}
-    if request.method == 'POST':
-        form = SubtopicForm(request.POST,initial=initial_data)
-        if form.is_valid():
-            subtopic = form.save(commit=False)
-            subtopic.topic = topic
-            subtopic.save()
-            return redirect("Subjects:subtopic",subject_id=subject_id,topic_id=topic_id )
-    else:
-        form = SubtopicForm(initial=initial_data)
-    template = loader.get_template('Subjects/subtopic/new_subtopic.html')
-    context = {'form':form,'subject':subject,'topic':topic,}
-    return HttpResponse(template.render(context,request))
 def edit_subtopic(request, subtopic_id, topic_id, subject_id):
     subject = get_object_or_404(Subjects,id=subject_id)
     topic = get_object_or_404(subject.topic,id=topic_id)
