@@ -4,7 +4,7 @@
 
 <p><a href="{% url 'Subjects:subject' %}"> {{ subject }}</a>/<a href="{% url 'Subjects:topic' subject_id=subject.id %}">{{ topic }}</a>/<a href="{% url 'Subjects:subtopic' subject_id=subject.id topic_id=topic.id %}">{{ subtopic }} </a> </p>
    <div>
-	   <h2>are you sure you want to delete '{{ entry.text}}'?</h2>
+	   <h2>are you sure you want to delete '{{ entry_text}}'?</h2>
 	   <form method="POST">
 		{% csrf_token %}
 		<!---i want to know how csrf_token works--->

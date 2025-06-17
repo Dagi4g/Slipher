@@ -120,12 +120,24 @@ def delete_entry(request, subject_id,topic_id,subtopic_id,entry_id):
     subtopic = topic.subtopic.get(id=subtopic_id)
     entry = subtopic.subtopicentry.get(id=entry_id)
 
-    if request.method == "POST":
-        entry.delete()
-        return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
-    template = loader.get_template("Subjects/subtopic/entry/delete_entry.html")
-    context = { "entry":entry,"subject" : subject,'topic':topic,"subtopic":subtopic}
-    return HttpResponse(template.render(context,request))
+    if len(entry.text)>50:
+        print(len(entry.text))
+        if request.method == "POST":
+            entry.delete()
+            return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
+        entry_text = entry.text
+        template = loader.get_template("Subjects/subtopic/entry/delete_entry.html")
+        context = { "entry":entry,"subject" : subject,'topic':topic,"subtopic":subtopic,"entry_text":entry_text}
+        return HttpResponse(template.render(context,request))
+    else:
+        print(len(entry.text))
+        if request.method == "POST":
+            entry.delete()
+            return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
+        entry_text = entry.text[:50]
+        template = loader.get_template("Subjects/subtopic/entry/delete_entry.html")
+        context = { "entry":entry,"subject" : subject,'topic':topic,"subtopic":subtopic,"entry_text":entry_text}
+        return HttpResponse(template.render(context,request))
 
 
 
