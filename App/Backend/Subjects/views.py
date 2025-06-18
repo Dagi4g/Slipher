@@ -23,23 +23,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
         ##---Subtopic related views---##
 
 
-#subtopic entry.
-def entry(requests,subject_id,topic_id,subtopic_id):
-    #for displaying additional information about the subtoic the user entered.
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-    entries = subtopic.subtopicentry.all()
-    #get all the entries.
-    template = loader.get_template("Subjects/subtopic/entry/show_entry.html")
-    context = {
-            "subtopic":subtopic,"topic":topic,"subject":subject,"entries":entries,
-            }
-    return HttpResponse(template.render(context,requests))
-
-
-
-
 # adding entry.
 
 def new_entry(request,subject_id,topic_id,subtopic_id):
