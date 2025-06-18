@@ -22,54 +22,6 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
 
         ##---Subtopic related views---##
 
-# Add Subtopic
-def new_subtopic(request,subject_id,topic_id):
-    subject = get_object_or_404(Subjects,id=subject_id)
-    topic = get_object_or_404(subject.topic,id=topic_id)
-    last_seen = date.today().isoformat()
-    initial_data = { 'last_seen':last_seen}
-    if request.method == 'POST':
-        form = SubtopicForm(request.POST,initial=initial_data)
-        if form.is_valid():
-            subtopic = form.save(commit=False)
-            subtopic.topic = topic
-            subtopic.save()
-            return redirect("Subjects:subtopic",subject_id=subject_id,topic_id=topic_id )
-    else:
-        form = SubtopicForm(initial=initial_data)
-    template = loader.get_template('Subjects/subtopic/new_subtopic.html')
-    context = {'form':form,'subject':subject,'topic':topic,}
-    return HttpResponse(template.render(context,request))
-def edit_subtopic(request, subtopic_id, topic_id, subject_id):
-    subject = get_object_or_404(Subjects,id=subject_id)
-    topic = get_object_or_404(subject.topic,id=topic_id)
-    subtopic = get_object_or_404(topic.subtopic,id=subtopic_id)
-
-    if request.method == 'POST':
-        form = SubtopicForm(request.POST, instance=subtopic)
-        if form.is_valid():
-            form.instance.topic = topic  # ensure topic is set
-            form.save()
-            return redirect('Subjects:subtopic', subject_id=subject_id, topic_id=topic_id)
-    else:
-        form = SubtopicForm(instance=subtopic)
-
-    template = loader.get_template('Subjects/subtopic/edit_subtopic.html')
-    context = {'form': form, 'subtopic': subtopic, 'topic': topic, 'subject': subject}
-    return HttpResponse(template.render(context, request))
-
-# Delete Subtopic
-def delete_subtopic(request, subject_id,topic_id,subtopic_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-
-    if request.method == "POST":
-        subtopic.delete()
-        return redirect("Subjects:subtopic",subject_id=subject_id,topic_id=topic_id)
-    template = loader.get_template("Subjects/subtopic/delete_subtopic.html")
-    context = {"subject" : subject,'topic':topic,"subtopic":subtopic}
-    return HttpResponse(template.render(context,request))
 
 #subtopic entry.
 def entry(requests,subject_id,topic_id,subtopic_id):

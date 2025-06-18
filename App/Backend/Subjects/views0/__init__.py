@@ -7,7 +7,11 @@ from .topic import (TopicListView,
                     TopicUpdateView,
                     TopicDeleteView
                     )
-from .subtopic import (SubtopicListView,SubtopicCreateView)
+from .subtopic import (SubtopicListView,
+                       SubtopicCreateView,
+                       SubTopicUpdateView,
+                       SubTopicDeleteView
+                       )
 
 
 __all__ = [
@@ -22,6 +26,8 @@ __all__ = [
         "TopicUpdateView",
         "TopicDeleteView",
         #subtopic related views.
+        "SubtopicListView",
         "SubtopicCreateView",
-        "SubtopicCreateView",
+        "SubTopicUpdateView",
+        "SubTopicDeleteView"
         ]
