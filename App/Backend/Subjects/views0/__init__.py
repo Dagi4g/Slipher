@@ -13,7 +13,11 @@ from .subtopic import (SubtopicListView,
                        SubTopicDeleteView
                        )
 
-from .entry import (SubtopicEntryListView)
+from .entry import (SubtopicEntryListView,
+                        SubtopicEntryCreateView,
+                        SubtopicEntryUpdateView,
+                        SubtopicEntryDeleteView,
+                        )
 
 __all__ = [
         'slipher',
@@ -30,7 +34,11 @@ __all__ = [
         "SubtopicListView",
         "SubtopicCreateView",
         "SubTopicUpdateView",
-        "SubTopicDeleteView"
+        "SubTopicDeleteView",
+
         #entry related views.
-        "SubtopicEntryListView"
+        "SubtopicEntryListView",
+        "SubtopicEntryCreateView",
+        "SubtopicEntryUpdateView",
+        "SubtopicEntryDeleteView",
         ]
