@@ -23,93 +23,10 @@ from .forms import SubjectForm,TopicForm,SubtopicForm,SubtopicEntryForm
         ##---Subtopic related views---##
 
 
-# adding entry.
-
-def new_entry(request,subject_id,topic_id,subtopic_id):
-    """Add creating new text data about a particular subtopic"""
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-    if request.method == 'POST':
-        form = SubtopicEntryForm(request.POST)
-        if form.is_valid():
-            entry = form.save(commit=False)
-            entry.subtopic = subtopic
-            entry.save()
-            return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id ,subtopic_id=subtopic_id)
-    else:
-        form = SubtopicEntryForm()
-    template = loader.get_template('Subjects/subtopic/entry/new_entry.html')
-    context = {'form':form,'subject':subject,'topic':topic,"subtopic":subtopic}
-    return HttpResponse(template.render(context,request))
-
-# editing entry.
-def edit_entry(request, subtopic_id, topic_id, subject_id,entry_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-    entry = subtopic.subtopicentry.get(id=entry_id)
-    print(entry.id)
-
-    if request.method == 'POST':
-        form = SubtopicEntryForm(request.POST,instance=entry)
-        if form.is_valid():
-            form.instance.subtopic = subtopic  # ensure topic is set
-            form.save()
-            return redirect('Subjects:subtopic_entry', subject_id=subject_id, topic_id=topic_id, subtopic_id=subtopic_id,)
-    else:
-        form = SubtopicEntryForm(instance=entry)
-
-    template = loader.get_template('Subjects/subtopic/entry/edit_entry.html')
-    context = {'form': form, 'entry':entry,'subtopic': subtopic, 'topic': topic, 'subject': subject}
-    return HttpResponse(template.render(context, request))
-
-
-
-# Delete entry
-def delete_entry(request, subject_id,topic_id,subtopic_id,entry_id):
-    subject = Subjects.objects.get(id=subject_id)
-    topic = subject.topic.get(id=topic_id)
-    subtopic = topic.subtopic.get(id=subtopic_id)
-    entry = subtopic.subtopicentry.get(id=entry_id)
-
-    if request.method == "POST":
-        entry.delete()
-        return redirect("Subjects:subtopic_entry",subject_id=subject_id,topic_id=topic_id, subtopic_id=subtopic.id)
-    template = loader.get_template("Subjects/subtopic/entry/delete_entry.html")
-    context = { "entry":entry,"subject" : subject,'topic':topic,"subtopic":subtopic}
-    return HttpResponse(template.render(context,request))
-
 
 
 
 from random import choice
-
-def should_review(request):
-    now = date.today()
-
-    # Filter subtopics where review date/time is <= now (due for review)
-    due_subtopics = SubTopicMemory.objects.filter(next_review__lte=now)
-
-    if due_subtopics.exists():
-        subtopic_list = []
-        for subtopic in due_subtopics:
-            subtopic_list.append({
-                "subtopic": subtopic.subtopic.subtopic_name, 
-                "topic": subtopic.subtopic.topic.topic_name, 
-                "subject": subtopic.subtopic.topic.subject.subject_name, 
-                "next_review": subtopic.next_review.isoformat(),
-            })
-
-        return JsonResponse({
-            "should_review": True,
-            "subtopics": subtopic_list
-        })
-    else:
-        return JsonResponse({
-            "should_review": False,
-            "subtopics": []
-        })
 from django.db.models import Prefetch
 def show_planned_subject(request):
     subtopic = Subtopics.objects.filter(review=False)
