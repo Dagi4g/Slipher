@@ -70,6 +70,8 @@ class SubTopicUpdateView(UpdateView):
     
     def get_object(self):
         return get_object_or_404(models.Subtopics,id=self.kwargs['subtopic_id'])      
+
+
 class SubTopicDeleteView(DeleteView):
     model = models.Subtopics
     form = forms.Subtopics
