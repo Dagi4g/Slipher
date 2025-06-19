@@ -20,6 +20,8 @@ from .entry import (SubtopicEntryListView,
                         )
 
 from .review import (ShouldReviewView,
+                     RememberedView,
+                     ForgotView,
                      )
 
 __all__ = [
@@ -47,4 +49,6 @@ __all__ = [
 
         #reviwew related views.
         "ShouldReviewView",
+        "RememberedView",
+        "ForgotView",
         ]
