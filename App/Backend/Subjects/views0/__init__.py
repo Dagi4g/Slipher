@@ -19,6 +19,9 @@ from .entry import (SubtopicEntryListView,
                         SubtopicEntryDeleteView,
                         )
 
+from .review import (ShouldReviewView,
+                     )
+
 __all__ = [
         'slipher',
         "SubjectListView",
@@ -41,4 +44,7 @@ __all__ = [
         "SubtopicEntryCreateView",
         "SubtopicEntryUpdateView",
         "SubtopicEntryDeleteView",
+
+        #reviwew related views.
+        "ShouldReviewView",
         ]
