@@ -48,8 +48,8 @@ urlpatterns = [
         ##---show review---##
         path("should_review/",views0.ShouldReviewView.as_view(),name="should_review"),
 
-        path("remembered/",views.remembered,name="rememebered"),
-        path("forgot/",views.forgot,name="forgot"),
+        path("remembered/",views0.RememberedView.as_view(),name="rememebered"),
+        path("forgot/",views0.ForgotView.as_view(),name="forgot"),
 
         ##---plan---##
         path("planned_subject",views.show_planned_subject,name='planned_subject'),
