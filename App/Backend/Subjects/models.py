@@ -65,7 +65,6 @@ class SubTopicMemory(models.Model):
     revision_count = models.IntegerField(default=0)
 
 
-    last_reviewed = models.DateField()# this value is from the form.
     
     def save(self,*args,**kwargs)-> None:
         # because in django the subtopics last seen date can't be used as

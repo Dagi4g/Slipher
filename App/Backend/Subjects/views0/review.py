@@ -1,3 +1,4 @@
+#djanvo related modules and packages
 from django.views import View
 from django.http import JsonResponse
 from django.utils import timezone
@@ -6,7 +7,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Prefetch
 
+#python builtin modules and functions.
 from datetime import date, timedelta
+import json
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ShouldReviewView(View):
