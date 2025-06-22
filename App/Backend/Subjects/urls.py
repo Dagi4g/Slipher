@@ -52,7 +52,7 @@ urlpatterns = [
         path("forgot/",views0.ForgotView.as_view(),name="forgot"),
 
         ##---plan---##
-        path("planned_subject",views.show_planned_subject,name='planned_subject'),
+        path("planned_subject",views0.PlannedSubjectsListView.as_view(),name='planned_subject'),
         path("planned_subject/<int:subject_id>/planned_topic",views.show_planned_subject,name='planned_subject'),
 
         ]

@@ -24,6 +24,9 @@ from .review import (ShouldReviewView,
                      ForgotView,
                      )
 
+from .Planned.planned_subject import (PlannedSubjectsListView,
+                      )
+
 __all__ = [
         'slipher',
         "SubjectListView",
@@ -51,4 +54,9 @@ __all__ = [
         "ShouldReviewView",
         "RememberedView",
         "ForgotView",
+        
+        #plan related view.
+        "PlannedSubjectListView",
+        "PlannedTopicView",
+
         ]

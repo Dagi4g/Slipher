@@ -3,9 +3,9 @@
 {% block content %}
 
 <h3>Subjects: </h3>
-{% if subjects %}
+{% if planned_subjects %}
 	<ol>
-		{% for subject in subjects %}
+		{% for subject in planned_subjects %}
 		<p> {{ subject }} </P>
 		{% endfor %}
 	</ol>
