@@ -4,10 +4,11 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 
 from Subjects import models
+
 class PlannedSubjectsListView(ListView):
     model = models.Subjects
     template_name = 'Subjects/planned/planned_subject.html'
-    context_object_name = 'planned_subjects'
+    context_object_name = 'planned_subject'
 
     def get_queryset(self):
         subtopic = models.Subtopics.objects.filter(review=False)
