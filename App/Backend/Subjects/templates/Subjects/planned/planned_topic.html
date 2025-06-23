@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %} 
+
+<h3>Planned Topic: </h3>
+{% if planned_topic %}
+{% for topic in planned_topic %}
+    <p> {{ topic }} </p>
+{% endfor %}    
+{% else %}
+    <p> There is no planned topic. </p>
+{% endif %}
+
+{% endblock content %}
