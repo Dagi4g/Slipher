@@ -48,7 +48,7 @@ def show_planned_topic(request,subject_id):
     context = { 'subject': subject,
                'topic' : topic
                }
-    return HttpResonse(template.render(context,request))
+    return HttpResponse(template.render(context,request))
 
     
 

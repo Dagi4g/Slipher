@@ -1,0 +1,15 @@
+{% extends "Subjects/base.html" %}
+{% block content %}
+
+{% if planned_topic %}
+<ol>{% for topic in planned_topic %}
+<li></li><p>
+    {{ topic.topic_name }}
+</p></li>
+{% endfor %}
+</ol>
+{% else %}
+<p>There is no topic planned.</p>
+{% endif %} 
+
+{% endblock content %}
