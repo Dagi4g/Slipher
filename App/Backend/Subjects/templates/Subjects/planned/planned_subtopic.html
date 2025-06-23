@@ -3,10 +3,10 @@
 {% block content %}
 
 <h3>Subjects: </h3>
-{% if subjects %}
+{% if planned_subtopics %}
 	<ol>
-		{% for subject in subjects %}
-		<p> {{ subject }} </P>
+		{% for subtopic in planned_subtopics %}
+		<p> {{ subtopic}} </P>
 		{% endfor %}
 	</ol>
 

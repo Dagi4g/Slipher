@@ -30,6 +30,8 @@ from .Planned.planned_subject import (PlannedSubjectsListView,
 
 from .Planned.planned_topic import (PlannedTopicsListView,)
 
+from .Planned.planned_subtopic import (PlannedSubtopicListView,)        
+
 __all__ = [
         'slipher',
         "SubjectListView",
@@ -61,5 +63,6 @@ __all__ = [
         #plan related view.
         "PlannedSubjectsListView",
         "PlannedTopicsListView",
+        "PlannedSubtopicListView",
 
         ]
