@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 
-from Subjects import models
+from Subjects import models,forms
 
 class PlannedSubjectsListView(ListView):
     model = models.Subjects
@@ -20,3 +20,12 @@ class PlannedSubjectsListView(ListView):
         context = super().get_context_data(**kwargs)
         context['planned_subjects'] = self.get_queryset()
         return context
+    
+class PlannedSubjectCreateView(CreateView):
+    model = models.Subjects
+    template_name = 'Subjects/planned/planned_subject_form.html'
+    form_class = forms.SubjectForm
+
+    def get_success_url(self):
+        return reverse_lazy('Subjects:planned_subjects')
+    
