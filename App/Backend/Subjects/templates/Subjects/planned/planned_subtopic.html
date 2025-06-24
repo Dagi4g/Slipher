@@ -6,7 +6,7 @@
 {% if planned_subtopics %}
 	<ol>
 		{% for subtopic in planned_subtopics %}
-		<p> {{ subtopic}} </P>
+		<p><a href="{% url 'Subjects:subtopic_entry' subject.id topic.id subtopic.id %}">{{ subtopic }} </a></p>
 		{% endfor %}
 	</ol>
 

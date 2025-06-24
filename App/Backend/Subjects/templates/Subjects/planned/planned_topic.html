@@ -2,14 +2,14 @@
 {% block content %}
 
 {% if planned_topic %}
+<p>Planned topics in subject: {{ subject }}</p>
+<h3>Topics:</h3>
 <ol>{% for topic in planned_topic %}
-<li></li><p>
-    {{ topic.topic_name }}
-</p></li>
+<li><a href="{% url 'Subjects:planned_subtopic' subject.id topic.id %}">{{ topic.topic_name }}</a></li>
 {% endfor %}
 </ol>
 {% else %}
-<p>There is no topic planned.</p>
-{% endif %} 
+<p>There is no planned topic in subject: {{ subject }}.</p>
+{% endif %}
 
 {% endblock content %}

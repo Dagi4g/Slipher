@@ -19,5 +19,4 @@ class PlannedSubjectsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['planned_subjects'] = self.get_queryset()
-        print(context['planned_subjects'])
         return context
