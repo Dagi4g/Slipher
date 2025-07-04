@@ -25,7 +25,7 @@ from .review import (ShouldReviewView,
                      )
 
 from .Planned.planned_subject import (PlannedSubjectsListView,
-                                      PlannedSubjectCreateView,
+                                      #PlannedSubjectCreateView,
                                       
                       )
 
@@ -63,8 +63,5 @@ __all__ = [
         
         #plan related view.
         "PlannedSubjectsListView",
-        "PlannedSubjectCreateView",
-        "PlannedTopicsListView",
-        "PlannedSubtopicListView",
 
         ]

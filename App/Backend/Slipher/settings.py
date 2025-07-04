@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     #my app.
     'Subjects.apps.SubjectsConfig',
+    'Users.apps.UsersConfig',
     #django's default app.
     'django.contrib.admin',
     'django.contrib.auth',

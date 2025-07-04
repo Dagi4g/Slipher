@@ -53,7 +53,6 @@ urlpatterns = [
 
         ##---plan---##
         path("planned_subject",views.PlannedSubjectsListView.as_view(),name='planned_subject'),
-        path("planned_subject/new_planned_subject",views.PlannedSubjectCreateView.as_view(),name='new_planned_subject'),
         path("planned_subject/<int:subject_id>/planned_topic",views.PlannedTopicsListView.as_view(),name='planned_topic'),
         path("planned_subject/<int:subject_id>/planned_topic/<int:topic_id>/planned_subtopic", views.PlannedSubtopicListView.as_view(), name='planned_subtopic'),
 
