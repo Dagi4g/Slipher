@@ -42,18 +42,16 @@ Slipher uses **Python** and **SQLite** for managing study data.
 
 ## 📈 Progress So Far
 ### ✅ Completed:
-- **Database Creation:** A structured database to store subjects and topics.
-- **Adding Subjects:** Users can add subjects directly from the terminal.
-- **Input processing** Slipher uses `Slipher_io` package to manage input output.
+- **Database Creation and management:** A structured database to store subjects and topics.
+- **the view of the app: ** right now students can Easley view the data in the database and manage them.
 - **scheduling the review day** Slipher uses `schedule.py` module in `Src` package to manage the scheduling process of a particular topic(definitly with a lot of bugs) .
 
 ---
 
 ### 🔜 Next Steps:
-- **Simplify Adding Topics & Subtopics:** Improving how topics and subtopics are added from the terminal.
+- **user autontication and verification** this verification system takes the phone number, school data and ideas are supported.
 - **Notification System:** Personalized reminders based on the user’s progress.
-- **Enhanced User Input:** Refining how users add topics and subtopics for a smoother experience.
-- **Improved UI:** Transitioning from a terminal-based interface to a more user-friendly design.
+- **Improving the UI/UX:** new ideas are supported .
 ---
 
 ## 🎯 Core Focus
